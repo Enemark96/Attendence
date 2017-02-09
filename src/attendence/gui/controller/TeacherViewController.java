@@ -7,7 +7,9 @@ package attendence.gui.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 
 /**
  * FXML Controller class
@@ -15,6 +17,9 @@ import javafx.fxml.Initializable;
  * @author Jacob Enemark
  */
 public class TeacherViewController implements Initializable {
+
+    @FXML
+    private Label lblUsername;
 
     /**
      * Initializes the controller class.
