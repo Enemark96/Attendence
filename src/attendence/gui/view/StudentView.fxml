@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane dividerPositions="0.29797979797979796" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<SplitPane dividerPositions="0.29797979797979796" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="321.0" prefWidth="499.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendence.gui.controller.StudentViewController">
   <items>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+         <children>
+            <ListView layoutX="10.0" layoutY="131.0" prefHeight="177.0" prefWidth="128.0" />
+            <Label layoutX="14.0" layoutY="113.0" text="Missed Classes" />
+            <ComboBox layoutX="14.0" layoutY="75.0" prefHeight="25.0" prefWidth="97.0" promptText="Overall" />
+            <Button layoutX="14.0" layoutY="31.0" mnemonicParsing="false" text="Check-in" />
+         </children></AnchorPane>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="372.0" prefWidth="374.0">
+         <children>
+            <BarChart layoutY="40.0" prefHeight="279.0" prefWidth="346.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </BarChart>
+            <Label layoutX="14.0" layoutY="14.0" text="Welcome" />
+            <Label fx:id="lblUser" layoutX="74.0" layoutY="14.0" text="Label" />
+         </children></AnchorPane>
   </items>
 </SplitPane>

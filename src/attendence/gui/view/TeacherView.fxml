@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendence.gui.controller.TeacherViewController">
-    
+
+<AnchorPane id="AnchorPane" prefHeight="376.0" prefWidth="418.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="attendence.gui.controller.TeacherViewController">
+   <children>
+      <TableView layoutX="14.0" layoutY="104.0" prefHeight="261.0" prefWidth="388.0">
+        <columns>
+          <TableColumn prefWidth="280.0" text="Student" />
+          <TableColumn prefWidth="107.0" text="Absence" />
+        </columns>
+      </TableView>
+      <Label layoutX="14.0" layoutY="84.0" text="Students" />
+      <ComboBox layoutX="14.0" layoutY="48.0" prefHeight="25.0" prefWidth="84.0" promptText="Class" />
+      <ComboBox layoutX="112.0" layoutY="48.0" prefHeight="25.0" prefWidth="84.0" promptText="Overall" />
+      <Label layoutX="14.0" layoutY="14.0" text="Welcome" />
+      <Label fx:id="lblUsername" layoutX="84.0" layoutY="14.0" text="Label" />
+      <ComboBox layoutX="209.0" layoutY="48.0" prefHeight="25.0" prefWidth="84.0" promptText="Date" />
+   </children>
 </AnchorPane>
