@@ -12,7 +12,6 @@ import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -32,7 +31,7 @@ public class StudentViewController implements Initializable {
     @FXML
     private Label lblUser;
     @FXML
-    private ListView<Absence> listMissedClasses;
+    private ListView<Date> listMissedClasses;
 
     public StudentViewController()
     {
@@ -53,7 +52,7 @@ public class StudentViewController implements Initializable {
             }
         }
         lblUser.setText(model.getCurrentUser().getFirstName()+" "+model.getCurrentUser().getLastName());
-        listMissedClasses.setItems(model.getMissedClasses());
+        listMissedClasses.setItems(model.getMissedClassesAsString());
     }    
     
 }
