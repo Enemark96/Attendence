@@ -28,6 +28,11 @@ public class Student {
         this.className = className;
     }
 
+    public int getId()
+    {
+        return id;
+    }
+
     public String getFirstName()
     {
         return firstName;
