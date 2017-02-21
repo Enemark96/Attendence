@@ -5,7 +5,6 @@
  */
 package attendence.bll;
 
-import attendence.be.Student;
 import attendence.dal.PersonDAO;
 import java.util.List;
 
@@ -28,4 +27,8 @@ public class PersonManager {
         return personDAO.getAllTeachers();
     }
      
+     public List getAllAbsence()
+     {
+         return personDAO.getAllAbsence();
+     }
 }

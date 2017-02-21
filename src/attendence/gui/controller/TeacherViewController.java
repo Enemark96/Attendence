@@ -5,6 +5,7 @@
  */
 package attendence.gui.controller;
 
+import attendence.gui.model.TeacherModel;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -18,8 +19,15 @@ import javafx.scene.control.Label;
  */
 public class TeacherViewController implements Initializable {
 
+    TeacherModel model;
+    
     @FXML
     private Label lblUsername;
+
+    public TeacherViewController()
+    {
+        this.model = TeacherModel.getInstance();
+    }
 
     /**
      * Initializes the controller class.
@@ -27,6 +35,7 @@ public class TeacherViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        lblUsername.setText(model.getCurrentUser().getFirstName()+" "+model.getCurrentUser().getLastName());
     }    
     
 }
