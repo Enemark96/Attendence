@@ -4,7 +4,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+
+<AnchorPane id="AnchorPane" prefHeight="376.0" prefWidth="418.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendence.gui.controller.TeacherViewController">
+
 <AnchorPane id="AnchorPane" prefHeight="376.0" prefWidth="418.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendence.gui.controller.TeacherViewController">
+
    <children>
       <TableView fx:id="tblStudentAbs" layoutX="14.0" layoutY="104.0" prefHeight="261.0" prefWidth="388.0">
         <columns>
