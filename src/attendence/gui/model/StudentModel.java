@@ -7,6 +7,7 @@ package attendence.gui.model;
 
 import attendence.be.Absence;
 import attendence.be.Student;
+import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -38,6 +39,19 @@ public class StudentModel {
     public ObservableList<Absence> getMissedClasses()
     {
         return missedClasses;
+    }
+    
+    public ObservableList<String> getMissedClassesAsString()
+    {
+        
+        ObservableList<String> returnList = FXCollections.observableArrayList();
+        for (Absence missedClass : missedClasses)
+        {
+            String date = missedClass.getDate()+"";
+            date = date.substring(0, 10);
+            returnList.add(date);
+        }
+        return returnList;
     }
 
     public void setMissedClasses(ObservableList missedClasses)

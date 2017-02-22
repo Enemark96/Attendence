@@ -12,7 +12,6 @@ import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -32,7 +31,7 @@ public class StudentViewController implements Initializable {
     @FXML
     private Label lblUser;
     @FXML
-    private ListView<Absence> listMissedClasses;
+    private ListView<String> listMissedClasses;
 
     public StudentViewController()
     {
@@ -45,15 +44,14 @@ public class StudentViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
         for (Absence absence : absences)
         {
-            if(model.getCurrentUser().getId() == absence.getId()){
+            if(model.getCurrentUser().getId() == absence.getStudentId()){
                 model.addMissedClass(absence);
             }
         }
         lblUser.setText(model.getCurrentUser().getFirstName()+" "+model.getCurrentUser().getLastName());
-        listMissedClasses.setItems(model.getMissedClasses());
+        listMissedClasses.setItems(model.getMissedClassesAsString());
     }    
     
 }

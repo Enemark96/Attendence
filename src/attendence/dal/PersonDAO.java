@@ -59,10 +59,10 @@ public class PersonDAO {
                 String[] dataArray = line.split(",");
                 returnList.add(new Student(
                         Integer.parseInt(dataArray[0]),
-                        dataArray[1],
-                        dataArray[2],
-                        dataArray[3],
-                        dataArray[4],
+                        dataArray[1].trim(),
+                        dataArray[2].trim(),
+                        dataArray[3].trim(),
+                        dataArray[4].trim(),
                         c + num + ""));
                 line = CSVFile.readLine();
             }
@@ -91,10 +91,10 @@ public class PersonDAO {
                 String[] dataArray = line.split(",");
                 returnList.add(new Teacher(
                         Integer.parseInt(dataArray[0]),
-                        dataArray[1],
-                        dataArray[2],
-                        dataArray[3],
-                        dataArray[4]));
+                        dataArray[1].trim(),
+                        dataArray[2].trim(),
+                        dataArray[3].trim(),
+                        dataArray[4].trim()));
                 line = CSVFile.readLine();
             }
 
@@ -123,7 +123,7 @@ public class PersonDAO {
                 {
                     returnList.add(new Absence(
                             Integer.parseInt(dataArray[0]),
-                            new SimpleDateFormat("MM/dd/yyyy").parse(dataArray[1]),
+                            new SimpleDateFormat("dd/MM/yyyy").parse(dataArray[1]),
                             Integer.parseInt(dataArray[2])));
                 }
                 catch (ParseException ex)
