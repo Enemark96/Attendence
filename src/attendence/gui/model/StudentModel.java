@@ -41,12 +41,15 @@ public class StudentModel {
         return missedClasses;
     }
     
-    public ObservableList<Date> getMissedClassesAsString()
+    public ObservableList<String> getMissedClassesAsString()
     {
-        ObservableList<Date> returnList = FXCollections.observableArrayList();
+        
+        ObservableList<String> returnList = FXCollections.observableArrayList();
         for (Absence missedClass : missedClasses)
         {
-            returnList.add(missedClass.getDate());
+            String date = missedClass.getDate()+"";
+            date = date.substring(0, 10);
+            returnList.add(date);
         }
         return returnList;
     }
