@@ -18,6 +18,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -49,6 +50,12 @@ public class TeacherViewController implements Initializable {
     ObservableList<Student> allStudents;
     @FXML
     private Button closeButton;
+    @FXML
+    private ComboBox<String> comboClass;
+    @FXML
+    private ComboBox<String> comboMonth;
+    @FXML
+    private ComboBox<String> comboDate;
     
 
     public TeacherViewController()
@@ -83,6 +90,7 @@ public class TeacherViewController implements Initializable {
             student.setAmountOfAbsence(x);
         }
         colAbsence.setCellValueFactory(new PropertyValueFactory<>("amountOfAbsence"));
+        fillComboBoxes();
     }    
 
     @FXML
@@ -90,6 +98,20 @@ public class TeacherViewController implements Initializable {
           Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
 
+    }
+    
+    private void fillComboBoxes()
+    {
+           
+   comboClass.getItems().add("CS2016A");
+   comboClass.getItems().add("CS2016B");
+   
+   comboMonth.getItems().add("January");
+   comboMonth.getItems().add("Febuary");
+   
+   comboDate.getItems().add("1");
+   comboDate.getItems().add("2");
+   
     }
     
 }
