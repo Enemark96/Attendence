@@ -19,7 +19,9 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -42,7 +44,9 @@ public class StudentViewController implements Initializable
     private Button btnCheckIn;
     @FXML
     private PieChart absenceChart;
-
+    @FXML
+    private Button closeButton;
+    
     public StudentViewController()
     {
         this.data = FXCollections.observableArrayList();
@@ -82,7 +86,7 @@ public class StudentViewController implements Initializable
         else
         {
             btnCheckIn.setText("Check-out");
-            btnCheckIn.setStyle("-fx-background-color : RED;");
+            btnCheckIn.setStyle("-fx-background-color : #FF0033;");
            lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName() + ", You are now cheked-in");
         }
     }
@@ -103,5 +107,12 @@ public class StudentViewController implements Initializable
         data.add(new PieChart.Data("Attendence", 65));
         absenceChart.setData(data);
 
+    }
+
+    @FXML
+    private void closeWindow()
+    {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
     }
 }
