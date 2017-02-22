@@ -21,6 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -42,6 +43,8 @@ public class LoginViewController implements Initializable {
     private TextField txtUser;
     @FXML
     private TextField txtPass;
+    @FXML
+    private Button closeButton;
 
     public LoginViewController()
     {
@@ -123,5 +126,11 @@ public class LoginViewController implements Initializable {
             }
         }
     }
-
+    
+    @FXML
+    private void closeWindow()
+    {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
+    }
 }

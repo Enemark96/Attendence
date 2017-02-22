@@ -4,34 +4,31 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="189.0" prefWidth="371.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendence.gui.controller.LoginViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="203.0" prefWidth="323.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendence.gui.controller.LoginViewController">
    <center>
-      <GridPane prefHeight="189.0" prefWidth="330.0" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+      <Pane prefHeight="175.0" prefWidth="357.0" styleClass="background" stylesheets="@css/Style.css" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Username:" />
-            <Label text="Password:" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" onAction="#handleLogin" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="txtUser" GridPane.columnIndex="1">
+            <TextField fx:id="txtUser" layoutX="134.0" layoutY="79.0" prefHeight="25.0" prefWidth="128.0" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="txtPass" prefHeight="25.0" prefWidth="127.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Button layoutX="59.0" layoutY="149.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="25.0" prefWidth="205.0" styleClass="buttonhoverblue, buttoncolorblue" text="Login" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="txtPass" layoutX="134.0" layoutY="110.0" prefHeight="25.0" prefWidth="127.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
             </TextField>
+            <Label layoutX="60.0" layoutY="114.0" text="Password:" textFill="WHITE" GridPane.rowIndex="1" />
+            <Label layoutX="62.0" layoutY="30.0" text="Erhvervsakademi Sydvest" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
+            <Label layoutX="60.0" layoutY="83.0" text="Username" textFill="WHITE" />
+            <Button fx:id="closeButton" layoutX="284.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#closeWindow" prefHeight="4.0" prefWidth="10.0" styleClass="roundbutton, buttonhoverred" textFill="WHITE" />
          </children>
-      </GridPane>
+      </Pane>
    </center>
 </BorderPane>
