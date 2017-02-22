@@ -31,7 +31,7 @@ public class StudentViewController implements Initializable {
     @FXML
     private Label lblUser;
     @FXML
-    private ListView<Date> listMissedClasses;
+    private ListView<String> listMissedClasses;
 
     public StudentViewController()
     {
@@ -44,10 +44,9 @@ public class StudentViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
         for (Absence absence : absences)
         {
-            if(model.getCurrentUser().getId() == absence.getId()){
+            if(model.getCurrentUser().getId() == absence.getStudentId()){
                 model.addMissedClass(absence);
             }
         }
