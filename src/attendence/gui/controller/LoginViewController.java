@@ -25,6 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -94,7 +95,7 @@ public class LoginViewController implements Initializable {
                 Parent root = loader.load();
                 primaryStage.close();
 
-                Stage newStage = new Stage();
+                Stage newStage = new Stage(StageStyle.UNDECORATED);
                 newStage.setScene(new Scene(root));
 
                 newStage.initModality(Modality.WINDOW_MODAL);
@@ -115,7 +116,7 @@ public class LoginViewController implements Initializable {
                 Parent root = loader.load();
                 primaryStage.close();
 
-                Stage newStage = new Stage();
+                Stage newStage = new Stage(StageStyle.UNDECORATED);
                 newStage.setScene(new Scene(root));
 
                 newStage.initModality(Modality.WINDOW_MODAL);

@@ -10,9 +10,20 @@ and open the template in the editor.
 
 .background 
 {
-    -fx-background-color: #48b4ed;
+    -fx-background-color: #b1d9f0;
+  
 }
 
+.listcells
+{
+   -fx-control-inner-background: #7ec0e7 ;
+  
+}
+
+.dropdownblue
+{
+    -fx-background-color: #7ec0e7;
+}
 
 .buttoncolorblue
 {
@@ -25,6 +36,11 @@ and open the template in the editor.
  
 }
 
+.closebuttoncolor
+{
+-fx-background-color: #f78080;    
+}
+
 .buttonhoverred:hover
 {
     -fx-background-color: #e5350e;
@@ -34,8 +50,13 @@ and open the template in the editor.
 {
  
             -fx-background-radius: 50em; 
-            -fx-min-width: 18px; 
-            -fx-min-height: 18px; 
-            -fx-max-width: 18px;
-            -fx-max-height: 18px;
+            -fx-min-width: 15px; 
+            -fx-min-height: 15px; 
+            -fx-max-width: 15px;
+            -fx-max-height: 15px;
 }
+
+.split-pane *.split-pane-divider {
+    -fx-padding: 0 0 0 0;
+}
+
