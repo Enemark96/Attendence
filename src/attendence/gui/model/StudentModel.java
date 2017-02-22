@@ -7,7 +7,7 @@ package attendence.gui.model;
 
 import attendence.be.Absence;
 import attendence.be.Student;
-import java.util.Date;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -17,7 +17,7 @@ import javafx.collections.ObservableList;
  */
 public class StudentModel {
     Student currentUser;
-    ObservableList<Absence> missedClasses;
+    List<Absence> missedClasses;
 
     private static StudentModel instance;
 
@@ -36,7 +36,7 @@ public class StudentModel {
 
     }
 
-    public ObservableList<Absence> getMissedClasses()
+    public List<Absence> getMissedClasses()
     {
         return missedClasses;
     }
