@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,6 +24,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -40,12 +43,17 @@ public class LoginViewController implements Initializable {
     List<Student> Students;
     List<Teacher> Teachers;
 
+    private double xOffset = 0;
+    private double yOffset = 0;
+    
     @FXML
     private TextField txtUser;
     @FXML
     private TextField txtPass;
     @FXML
     private Button closeButton;
+    @FXML
+    private BorderPane bp;
 
     public LoginViewController()
     {
@@ -103,6 +111,23 @@ public class LoginViewController implements Initializable {
                 newStage.setTitle("Student");
 
                 newStage.show();
+                
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            }
+        });
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                newStage.setX(event.getScreenX() - xOffset);
+                newStage.setY(event.getScreenY() - yOffset);
+            }
+        });
+                
+                
             }
         }
         for (Teacher teacher : Teachers)
@@ -124,6 +149,25 @@ public class LoginViewController implements Initializable {
                 newStage.setTitle("Teacher");
 
                 newStage.show();
+                
+                
+                
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            }
+        });
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                newStage.setX(event.getScreenX() - xOffset);
+                newStage.setY(event.getScreenY() - yOffset);
+            }
+        });
+                
+                
             }
         }
     }
@@ -134,4 +178,5 @@ public class LoginViewController implements Initializable {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
+
 }
