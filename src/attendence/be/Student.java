@@ -9,63 +9,15 @@ package attendence.be;
  *
  * @author Jacob Enemark
  */
-public class Student {
-    
-    int id;
-    String firstName;
-    String lastName;
-    String username;
-    String password;
+public class Student extends Person {
+
     String className;
+    int amountOfAbsence;
 
     public Student(int id, String firstName, String lastName, String username, String password, String className)
     {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.password = password;
+        super(id, firstName, lastName, username, password);
         this.className = className;
-    }
-
-    public String getFirstName()
-    {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName)
-    {
-        this.firstName = firstName;
-    }
-
-    public String getLastName()
-    {
-        return lastName;
-    }
-
-    public void setLastName(String lastName)
-    {
-        this.lastName = lastName;
-    }
-
-    public String getUsername()
-    {
-        return username;
-    }
-
-    public void setUsername(String username)
-    {
-        this.username = username;
-    }
-
-    public String getPassword()
-    {
-        return password;
-    }
-
-    public void setPassword(String password)
-    {
-        this.password = password;
     }
 
     public String getClassName()
@@ -77,8 +29,17 @@ public class Student {
     {
         this.className = className;
     }
+
+    public void setAmountOfAbsence(int amountOfAbsence)
+    {
+        this.amountOfAbsence = amountOfAbsence;
+    }
+
+    public int getAmountOfAbsence()
+    {
+        return amountOfAbsence;
+    }
     
     
-    
-    
+
 }
