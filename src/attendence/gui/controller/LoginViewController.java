@@ -158,16 +158,15 @@ public class LoginViewController implements Initializable {
                 xOffset = event.getSceneX();
                 yOffset = event.getSceneY();
             }
-        });
-        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            });
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 newStage.setX(event.getScreenX() - xOffset);
                 newStage.setY(event.getScreenY() - yOffset);
             }
-        });
-                
-                
+            });
+  
             }
         }
     }
