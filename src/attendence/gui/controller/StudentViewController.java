@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
@@ -46,6 +47,8 @@ public class StudentViewController implements Initializable
     private PieChart absenceChart;
     @FXML
     private Button closeButton;
+    @FXML
+    private ComboBox<String> comboMonth;
     
     public StudentViewController()
     {
@@ -70,6 +73,9 @@ public class StudentViewController implements Initializable
         }
         lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         listMissedClasses.setItems(model.getMissedClassesAsString());
+        
+           comboMonth.getItems().add("January");
+   comboMonth.getItems().add("Febuary");
 
         updateChart();
     }
@@ -87,7 +93,7 @@ public class StudentViewController implements Initializable
         {
             btnCheckIn.setText("Check-out");
             btnCheckIn.setStyle("-fx-background-color : #FF0033;");
-           lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName() + ", You are now cheked-in");
+           lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName() + ", you are now cheked-in");
         }
     }
 
