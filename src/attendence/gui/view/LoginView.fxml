@@ -10,24 +10,21 @@
    <center>
       <Pane prefHeight="175.0" prefWidth="357.0" styleClass="background" stylesheets="@css/Style.css" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="txtUser" layoutX="134.0" layoutY="79.0" prefHeight="25.0" prefWidth="128.0" GridPane.columnIndex="1">
+            <TextField fx:id="txtUser" layoutX="134.0" layoutY="63.0" prefHeight="25.0" prefWidth="128.0" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
             </TextField>
-            <Button layoutX="59.0" layoutY="149.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="25.0" prefWidth="205.0" styleClass="buttonhoverblue, buttoncolorblue" text="Login" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="txtPass" layoutX="134.0" layoutY="110.0" prefHeight="25.0" prefWidth="127.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="20.0" right="20.0" />
-               </GridPane.margin>
-            </TextField>
-            <Label layoutX="60.0" layoutY="114.0" text="Password" textFill="WHITE" GridPane.rowIndex="1" />
-            <Label layoutX="62.0" layoutY="30.0" text="Erhvervsakademi Sydvest" textFill="WHITE">
+            <Button layoutX="59.0" layoutY="157.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="25.0" prefWidth="205.0" styleClass="buttonhoverblue, buttoncolorblue" text="Login" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label layoutX="60.0" layoutY="98.0" text="Password" textFill="WHITE" GridPane.rowIndex="1" />
+            <Label layoutX="62.0" layoutY="14.0" text="Erhvervsakademi Sydvest" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font></Label>
-            <Label layoutX="60.0" layoutY="83.0" text="Username" textFill="WHITE" />
+            <Label layoutX="60.0" layoutY="67.0" text="Username" textFill="WHITE" />
             <Button fx:id="closeButton" layoutX="291.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#closeWindow" prefHeight="4.0" prefWidth="10.0" styleClass="roundbutton, buttonhoverred, closebuttoncolor" text="x" />
+            <CheckBox layoutX="60.0" layoutY="127.0" mnemonicParsing="false" text="Remember me" textFill="WHITE" />
+            <PasswordField fx:id="txtPass" layoutX="134.0" layoutY="94.0" prefHeight="25.0" prefWidth="128.0" />
          </children>
       </Pane>
    </center>
