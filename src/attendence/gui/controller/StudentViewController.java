@@ -9,6 +9,7 @@ import attendence.be.Absence;
 import attendence.bll.PersonManager;
 import attendence.gui.model.StudentModel;
 import java.net.URL;
+import java.time.Month;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -49,7 +50,7 @@ public class StudentViewController implements Initializable
     private Button closeButton;
     @FXML
     private ComboBox<String> comboMonth;
-    
+
     public StudentViewController()
     {
         this.data = FXCollections.observableArrayList();
@@ -73,9 +74,11 @@ public class StudentViewController implements Initializable
         }
         lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         listMissedClasses.setItems(model.getMissedClassesAsString());
-        
-           comboMonth.getItems().add("January");
-   comboMonth.getItems().add("Febuary");
+
+        for (Month month : Month.values())
+        {
+            comboMonth.getItems().add(month.name().toLowerCase());
+        }
 
         updateChart();
     }
@@ -86,14 +89,14 @@ public class StudentViewController implements Initializable
         if (checkedIn())
         {
             btnCheckIn.setText("Check-in");
-             btnCheckIn.setStyle("-fx-background-color : LIGHTGREEN;");
-             lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName()); 
+            btnCheckIn.setStyle("-fx-background-color : LIGHTGREEN;");
+            lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         }
         else
         {
             btnCheckIn.setText("Check-out");
             btnCheckIn.setStyle("-fx-background-color : #FF0033;");
-           lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName() + ", you are now cheked-in");
+            lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName() + ", you are now cheked-in");
         }
     }
 
@@ -101,7 +104,6 @@ public class StudentViewController implements Initializable
     {
         return "Check-out".equals(btnCheckIn.getText());
     }
-
 
     private void updateChart()
     {
