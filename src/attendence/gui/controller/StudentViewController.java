@@ -76,7 +76,9 @@ public class StudentViewController extends Dragable implements Initializable {
 
         for (Month month : Month.values())
         {
-            comboMonth.getItems().add(month.name().toLowerCase());
+            String monthName = month.name().toLowerCase();
+            String upperMonth = capitalize(monthName);
+            comboMonth.getItems().add(upperMonth);
         }
 
 
@@ -134,5 +136,10 @@ public class StudentViewController extends Dragable implements Initializable {
     private void setOffset(MouseEvent event)
     {
         startDrag(event);
+    }
+    
+     private String capitalize(final String line)
+    {
+        return Character.toUpperCase(line.charAt(0)) + line.substring(1);
     }
 }

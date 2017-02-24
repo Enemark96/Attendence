@@ -110,7 +110,9 @@ public class TeacherViewController extends Dragable implements Initializable {
 
         for (Month month : Month.values())
         {
-            comboMonth.getItems().add(month.name().toLowerCase());
+            String monthName = month.name().toLowerCase();
+            String upperMonth = capitalize(monthName);
+            comboMonth.getItems().add(upperMonth);
         }
 
         getCurrentDate();
@@ -119,14 +121,16 @@ public class TeacherViewController extends Dragable implements Initializable {
     private void getCurrentDate()
     {
         String monthOfYear = LocalDateTime.now().toLocalDate().getMonth().name().toLowerCase();
+        String uppermonth = capitalize(monthOfYear);
         int dayOfMonth = LocalDateTime.now().toLocalDate().getDayOfMonth();
-        comboMonth.setValue(monthOfYear);
+        comboMonth.setValue(uppermonth);
         comboDate.setValue("" + dayOfMonth);
     }
 
     private void updateDateInfo()
     {
-        comboMonth.valueProperty().addListener((listener, oldVal, newVal) -> 
+        comboMonth.valueProperty().addListener((listener, oldVal, newVal)
+                -> 
                 {
                     comboDate.getItems().clear();
                     for (Month month : Month.values())
@@ -152,6 +156,11 @@ public class TeacherViewController extends Dragable implements Initializable {
     private void setOffset(MouseEvent event)
     {
         startDrag(event);
+    }
+
+    private String capitalize(final String line)
+    {
+        return Character.toUpperCase(line.charAt(0)) + line.substring(1);
     }
 
 }
