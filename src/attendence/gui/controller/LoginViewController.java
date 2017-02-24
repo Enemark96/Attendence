@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -101,7 +100,6 @@ public class LoginViewController extends Dragable implements Initializable {
             if (usernameInput.equals(teacher.getUsername()) && passwordInput.equals(teacher.getPassword()))
             {
                 teacherModel.setCurrentUser(teacher);
-                System.out.println(teacherModel.getCurrentUser().getUsername());
                 Stage primaryStage = (Stage) txtUser.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/attendence/gui/view/TeacherView.fxml"));
                 Parent root = loader.load();

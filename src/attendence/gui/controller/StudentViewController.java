@@ -21,7 +21,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.stage.Stage;
 
 /**
@@ -29,8 +28,7 @@ import javafx.stage.Stage;
  *
  * @author Jacob Enemark
  */
-public class StudentViewController extends Dragable implements Initializable
-{
+public class StudentViewController extends Dragable implements Initializable {
 
     private ObservableList data;
     StudentModel model;
@@ -49,7 +47,7 @@ public class StudentViewController extends Dragable implements Initializable
     private Button closeButton;
     @FXML
     private ComboBox<String> comboMonth;
-    
+
     public StudentViewController()
     {
         this.data = FXCollections.observableArrayList();
@@ -73,9 +71,9 @@ public class StudentViewController extends Dragable implements Initializable
         }
         lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         listMissedClasses.setItems(model.getMissedClassesAsString());
-        
-           comboMonth.getItems().add("January");
-   comboMonth.getItems().add("Febuary");
+
+        comboMonth.getItems().add("January");
+        comboMonth.getItems().add("Febuary");
 
         updateChart();
     }
@@ -86,14 +84,14 @@ public class StudentViewController extends Dragable implements Initializable
         if (checkedIn())
         {
             btnCheckIn.setText("Check-in");
-             btnCheckIn.setStyle("-fx-background-color : LIGHTGREEN;");
-             lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName()); 
+            btnCheckIn.setStyle("-fx-background-color : LIGHTGREEN;");
+            lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         }
         else
         {
             btnCheckIn.setText("Check-out");
             btnCheckIn.setStyle("-fx-background-color : #FF0033;");
-           lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName() + ", you are now cheked-in");
+            lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName() + ", you are now cheked-in");
         }
     }
 
@@ -101,7 +99,6 @@ public class StudentViewController extends Dragable implements Initializable
     {
         return "Check-out".equals(btnCheckIn.getText());
     }
-
 
     private void updateChart()
     {
