@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -35,7 +34,7 @@ import javafx.stage.StageStyle;
  *
  * @author Jacob Enemark
  */
-public class LoginViewController implements Initializable {
+public class LoginViewController extends Dragable implements Initializable {
 
     PersonManager manager;
     StudentModel studentModel;
@@ -43,9 +42,6 @@ public class LoginViewController implements Initializable {
     List<Student> Students;
     List<Teacher> Teachers;
 
-    private double xOffset = 0;
-    private double yOffset = 0;
-    
     @FXML
     private TextField txtUser;
     @FXML
@@ -93,6 +89,37 @@ public class LoginViewController implements Initializable {
     {
         String usernameInput = txtUser.getText();
         String passwordInput = txtPass.getText();
+        checkIfStudent(usernameInput, passwordInput);
+        checkIfTeacher(usernameInput, passwordInput);
+    }
+
+    private void checkIfTeacher(String usernameInput, String passwordInput) throws IOException
+    {
+        for (Teacher teacher : Teachers)
+        {
+            if (usernameInput.equals(teacher.getUsername()) && passwordInput.equals(teacher.getPassword()))
+            {
+                teacherModel.setCurrentUser(teacher);
+                Stage primaryStage = (Stage) txtUser.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/attendence/gui/view/TeacherView.fxml"));
+                Parent root = loader.load();
+                primaryStage.close();
+
+                Stage newStage = new Stage(StageStyle.UNDECORATED);
+                newStage.setScene(new Scene(root));
+
+                newStage.initModality(Modality.WINDOW_MODAL);
+                newStage.initOwner(primaryStage);
+                newStage.setTitle("Teacher");
+
+                newStage.show();
+
+            }
+        }
+    }
+
+    private void checkIfStudent(String usernameInput, String passwordInput) throws IOException
+    {
         for (Student student : Students)
         {
             if (usernameInput.equals(student.getUsername()) && passwordInput.equals(student.getPassword()))
@@ -111,71 +138,28 @@ public class LoginViewController implements Initializable {
                 newStage.setTitle("Student");
 
                 newStage.show();
-                
-            root.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                xOffset = event.getSceneX();
-                yOffset = event.getSceneY();
-            }
-        });
-        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                newStage.setX(event.getScreenX() - xOffset);
-                newStage.setY(event.getScreenY() - yOffset);
-            }
-        });
-                
-                
-            }
-        }
-        for (Teacher teacher : Teachers)
-        {
-            if (usernameInput.equals(teacher.getUsername()) && passwordInput.equals(teacher.getPassword()))
-            {
-                teacherModel.setCurrentUser(teacher);
-                System.out.println(teacherModel.getCurrentUser().getUsername());
-                Stage primaryStage = (Stage) txtUser.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/attendence/gui/view/TeacherView.fxml"));
-                Parent root = loader.load();
-                primaryStage.close();
 
-                Stage newStage = new Stage(StageStyle.UNDECORATED);
-                newStage.setScene(new Scene(root));
-
-                newStage.initModality(Modality.WINDOW_MODAL);
-                newStage.initOwner(primaryStage);
-                newStage.setTitle("Teacher");
-
-                newStage.show();
-                
-                
-                
-            root.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                xOffset = event.getSceneX();
-                yOffset = event.getSceneY();
-            }
-            });
-            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                newStage.setX(event.getScreenX() - xOffset);
-                newStage.setY(event.getScreenY() - yOffset);
-            }
-            });
-  
             }
         }
     }
-    
+
     @FXML
     private void closeWindow()
     {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    private void drag(MouseEvent event)
+    {
+        dragging(event, bp);
+    }
+
+    @FXML
+    private void setOffset(MouseEvent event)
+    {
+        startDrag(event);
     }
 
 }
