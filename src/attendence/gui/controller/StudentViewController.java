@@ -29,7 +29,7 @@ import javafx.stage.Stage;
  *
  * @author Jacob Enemark
  */
-public class StudentViewController implements Initializable
+public class StudentViewController extends Dragable implements Initializable
 {
 
     private ObservableList data;
@@ -120,5 +120,17 @@ public class StudentViewController implements Initializable
     {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    private void drag(MouseEvent event)
+    {
+        dragging(event, lblUser);
+    }
+
+    @FXML
+    private void setOffset(MouseEvent event)
+    {
+        startDrag(event);
     }
 }
