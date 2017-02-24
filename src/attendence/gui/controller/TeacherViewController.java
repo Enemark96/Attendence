@@ -10,6 +10,7 @@ import attendence.be.Student;
 import attendence.bll.PersonManager;
 import attendence.gui.model.TeacherModel;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +107,6 @@ public class TeacherViewController implements Initializable
 
     private void fillComboBoxes()
     {
-
         comboClass.getItems().add("CS2016A");
         comboClass.getItems().add("CS2016B");
 
@@ -114,6 +114,16 @@ public class TeacherViewController implements Initializable
         {
             comboMonth.getItems().add(month.name().toLowerCase());
         }
+        
+        getCurrentDate();
+    }
+
+    private void getCurrentDate()
+    {
+        String monthOfYear = LocalDateTime.now().toLocalDate().getMonth().name().toLowerCase();
+        int dayOfMonth = LocalDateTime.now().toLocalDate().getDayOfMonth();
+        comboMonth.setValue(monthOfYear);
+        comboDate.setValue("" + dayOfMonth);
     }
 
     private void updateDateInfo()
