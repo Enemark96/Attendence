@@ -9,6 +9,7 @@ import attendence.be.Absence;
 import attendence.bll.PersonManager;
 import attendence.gui.model.StudentModel;
 import java.net.URL;
+import java.time.Month;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -72,8 +73,12 @@ public class StudentViewController extends Dragable implements Initializable {
         lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         listMissedClasses.setItems(model.getMissedClassesAsString());
 
-        comboMonth.getItems().add("January");
-        comboMonth.getItems().add("Febuary");
+
+        for (Month month : Month.values())
+        {
+            comboMonth.getItems().add(month.name().toLowerCase());
+        }
+
 
         updateChart();
     }
