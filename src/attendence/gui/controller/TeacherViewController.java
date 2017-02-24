@@ -12,7 +12,6 @@ import attendence.gui.model.TeacherModel;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -33,8 +32,7 @@ import javafx.stage.Stage;
  *
  * @author Jacob Enemark
  */
-public class TeacherViewController implements Initializable
-{
+public class TeacherViewController extends Dragable implements Initializable {
 
     TeacherModel model;
     PersonManager manager;
@@ -114,7 +112,7 @@ public class TeacherViewController implements Initializable
         {
             comboMonth.getItems().add(month.name().toLowerCase());
         }
-        
+
         getCurrentDate();
     }
 
@@ -128,19 +126,32 @@ public class TeacherViewController implements Initializable
 
     private void updateDateInfo()
     {
-        comboMonth.valueProperty().addListener((listener, oldVal, newVal) -> {
-            comboDate.getItems().clear();
-            for (Month month : Month.values())
-            {
-                if (newVal.toLowerCase().equals(month.toString().toLowerCase()))
+        comboMonth.valueProperty().addListener((listener, oldVal, newVal) -> 
                 {
-                    for (int i = 0; i < month.maxLength(); i++)
+                    comboDate.getItems().clear();
+                    for (Month month : Month.values())
                     {
-                        comboDate.getItems().add("" + (i + 1));
+                        if (newVal.toLowerCase().equals(month.toString().toLowerCase()))
+                        {
+                            for (int i = 0; i < month.maxLength(); i++)
+                            {
+                                comboDate.getItems().add("" + (i + 1));
+                            }
+                        }
                     }
-                }
-            }            
         });
+    }
+
+    @FXML
+    private void drag(MouseEvent event)
+    {
+        dragging(event, comboDate);
+    }
+
+    @FXML
+    private void setOffset(MouseEvent event)
+    {
+        startDrag(event);
     }
 
 }

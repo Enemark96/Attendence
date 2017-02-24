@@ -8,7 +8,7 @@
 
 <BorderPane fx:id="bp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="203.0" prefWidth="323.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendence.gui.controller.LoginViewController">
    <center>
-      <Pane prefHeight="175.0" prefWidth="357.0" styleClass="background" stylesheets="@css/Style.css" BorderPane.alignment="CENTER">
+      <Pane onMouseDragged="#drag" onMousePressed="#setOffset" prefHeight="175.0" prefWidth="357.0" styleClass="background" stylesheets="@css/Style.css" BorderPane.alignment="CENTER">
          <children>
             <TextField fx:id="txtUser" layoutX="134.0" layoutY="63.0" prefHeight="25.0" prefWidth="128.0" GridPane.columnIndex="1">
                <GridPane.margin>
