@@ -141,7 +141,6 @@ public class LoginViewController extends Dragable implements Initializable {
 
                 newStage.show();
 
-
             }
         }
     }
