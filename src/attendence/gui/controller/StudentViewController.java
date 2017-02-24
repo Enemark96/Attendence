@@ -22,7 +22,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.stage.Stage;
 
 /**
@@ -30,8 +29,7 @@ import javafx.stage.Stage;
  *
  * @author Jacob Enemark
  */
-public class StudentViewController implements Initializable
-{
+public class StudentViewController extends Dragable implements Initializable {
 
     private ObservableList data;
     StudentModel model;
@@ -75,10 +73,12 @@ public class StudentViewController implements Initializable
         lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         listMissedClasses.setItems(model.getMissedClassesAsString());
 
+
         for (Month month : Month.values())
         {
             comboMonth.getItems().add(month.name().toLowerCase());
         }
+
 
         updateChart();
     }
@@ -122,5 +122,17 @@ public class StudentViewController implements Initializable
     {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    private void drag(MouseEvent event)
+    {
+        dragging(event, lblUser);
+    }
+
+    @FXML
+    private void setOffset(MouseEvent event)
+    {
+        startDrag(event);
     }
 }
