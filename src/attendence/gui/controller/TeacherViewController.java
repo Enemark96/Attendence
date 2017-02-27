@@ -10,7 +10,8 @@ import attendence.be.Student;
 import attendence.bll.PersonManager;
 import attendence.gui.model.TeacherModel;
 import java.net.URL;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -31,11 +32,11 @@ import javafx.stage.Stage;
  *
  * @author Jacob Enemark
  */
-public class TeacherViewController implements Initializable {
+public class TeacherViewController extends Dragable implements Initializable {
 
     TeacherModel model;
     PersonManager manager;
-    
+
     @FXML
     private Label lblUsername;
     @FXML
@@ -44,7 +45,7 @@ public class TeacherViewController implements Initializable {
     private TableColumn<Student, String> colStudent;
     @FXML
     private TableColumn<Student, String> colAbsence;
-    
+
     List<Student> studentList;
     List<Absence> absenceList;
     ObservableList<Student> allStudents;
@@ -56,7 +57,6 @@ public class TeacherViewController implements Initializable {
     private ComboBox<String> comboMonth;
     @FXML
     private ComboBox<String> comboDate;
-    
 
     public TeacherViewController()
     {
@@ -72,9 +72,10 @@ public class TeacherViewController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb)
+    {
         // TODO
-        lblUsername.setText(model.getCurrentUser().getFirstName()+" "+model.getCurrentUser().getLastName());
+        lblUsername.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         tblStudentAbs.setItems(allStudents);
         colStudent.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         for (Student student : studentList)
@@ -82,7 +83,7 @@ public class TeacherViewController implements Initializable {
             int x = 0;
             for (Absence absence : absenceList)
             {
-                if(student.getId() == absence.getStudentId())
+                if (student.getId() == absence.getStudentId())
                 {
                     x++;
                 }
@@ -91,27 +92,75 @@ public class TeacherViewController implements Initializable {
         }
         colAbsence.setCellValueFactory(new PropertyValueFactory<>("amountOfAbsence"));
         fillComboBoxes();
-    }    
+        updateDateInfo();
+    }
 
     @FXML
-    private void closeWindow(MouseEvent event) {
-          Stage stage = (Stage) closeButton.getScene().getWindow();
+    private void closeWindow(MouseEvent event)
+    {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
 
     }
-    
+
     private void fillComboBoxes()
     {
-           
-   comboClass.getItems().add("CS2016A");
-   comboClass.getItems().add("CS2016B");
-   
-   comboMonth.getItems().add("January");
-   comboMonth.getItems().add("Febuary");
-   
-   comboDate.getItems().add("1");
-   comboDate.getItems().add("2");
-   
+        comboClass.getItems().add("CS2016A");
+        comboClass.getItems().add("CS2016B");
+
+        for (Month month : Month.values())
+        {
+            String monthName = month.name().toLowerCase();
+            String upperMonth = capitalize(monthName);
+            comboMonth.getItems().add(upperMonth);
+        }
+
+        getCurrentDate();
     }
-    
+
+    private void getCurrentDate()
+    {
+        String monthOfYear = LocalDateTime.now().toLocalDate().getMonth().name().toLowerCase();
+        String uppermonth = capitalize(monthOfYear);
+        int dayOfMonth = LocalDateTime.now().toLocalDate().getDayOfMonth();
+        comboMonth.setValue(uppermonth);
+        comboDate.setValue("" + dayOfMonth);
+    }
+
+    private void updateDateInfo()
+    {
+        comboMonth.valueProperty().addListener((listener, oldVal, newVal)
+                -> 
+                {
+                    comboDate.getItems().clear();
+                    for (Month month : Month.values())
+                    {
+                        if (newVal.toLowerCase().equals(month.toString().toLowerCase()))
+                        {
+                            for (int i = 0; i < month.maxLength(); i++)
+                            {
+                                comboDate.getItems().add("" + (i + 1));
+                            }
+                        }
+                    }
+        });
+    }
+
+    @FXML
+    private void drag(MouseEvent event)
+    {
+        dragging(event, comboDate);
+    }
+
+    @FXML
+    private void setOffset(MouseEvent event)
+    {
+        startDrag(event);
+    }
+
+    private String capitalize(final String line)
+    {
+        return Character.toUpperCase(line.charAt(0)) + line.substring(1);
+    }
+
 }

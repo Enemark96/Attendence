@@ -23,6 +23,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -32,7 +34,7 @@ import javafx.stage.StageStyle;
  *
  * @author Jacob Enemark
  */
-public class LoginViewController implements Initializable {
+public class LoginViewController extends Dragable implements Initializable {
 
     PersonManager manager;
     StudentModel studentModel;
@@ -46,6 +48,8 @@ public class LoginViewController implements Initializable {
     private TextField txtPass;
     @FXML
     private Button closeButton;
+    @FXML
+    private BorderPane bp;
 
     public LoginViewController()
     {
@@ -85,6 +89,37 @@ public class LoginViewController implements Initializable {
     {
         String usernameInput = txtUser.getText();
         String passwordInput = txtPass.getText();
+        checkIfStudent(usernameInput, passwordInput);
+        checkIfTeacher(usernameInput, passwordInput);
+    }
+
+    private void checkIfTeacher(String usernameInput, String passwordInput) throws IOException
+    {
+        for (Teacher teacher : Teachers)
+        {
+            if (usernameInput.equals(teacher.getUsername()) && passwordInput.equals(teacher.getPassword()))
+            {
+                teacherModel.setCurrentUser(teacher);
+                Stage primaryStage = (Stage) txtUser.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/attendence/gui/view/TeacherView.fxml"));
+                Parent root = loader.load();
+                primaryStage.close();
+
+                Stage newStage = new Stage(StageStyle.UNDECORATED);
+                newStage.setScene(new Scene(root));
+
+                newStage.initModality(Modality.WINDOW_MODAL);
+                newStage.initOwner(primaryStage);
+                newStage.setTitle("Teacher");
+
+                newStage.show();
+
+            }
+        }
+    }
+
+    private void checkIfStudent(String usernameInput, String passwordInput) throws IOException
+    {
         for (Student student : Students)
         {
             if (usernameInput.equals(student.getUsername()) && passwordInput.equals(student.getPassword()))
@@ -103,35 +138,28 @@ public class LoginViewController implements Initializable {
                 newStage.setTitle("Student");
 
                 newStage.show();
-            }
-        }
-        for (Teacher teacher : Teachers)
-        {
-            if (usernameInput.equals(teacher.getUsername()) && passwordInput.equals(teacher.getPassword()))
-            {
-                teacherModel.setCurrentUser(teacher);
-                System.out.println(teacherModel.getCurrentUser().getUsername());
-                Stage primaryStage = (Stage) txtUser.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/attendence/gui/view/TeacherView.fxml"));
-                Parent root = loader.load();
-                primaryStage.close();
 
-                Stage newStage = new Stage(StageStyle.UNDECORATED);
-                newStage.setScene(new Scene(root));
-
-                newStage.initModality(Modality.WINDOW_MODAL);
-                newStage.initOwner(primaryStage);
-                newStage.setTitle("Teacher");
-
-                newStage.show();
             }
         }
     }
-    
+
     @FXML
     private void closeWindow()
     {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
+
+    @FXML
+    private void drag(MouseEvent event)
+    {
+        dragging(event, bp);
+    }
+
+    @FXML
+    private void setOffset(MouseEvent event)
+    {
+        startDrag(event);
+    }
+
 }
