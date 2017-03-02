@@ -16,15 +16,24 @@ import javafx.stage.Stage;
 public abstract class Dragable
 {
 
-    public double xOffset = 0;
-    public double yOffset = 0;
+    private double xOffset = 0;
+    private double yOffset = 0;
 
+    /**
+     * Starts the drag of the current scene.
+     * @param event The mouseevent to listen for.
+     */
     public void startDrag(MouseEvent event)
     {
         xOffset = event.getSceneX();
         yOffset = event.getSceneY();
     }
 
+    /**
+     * Occours while the view is being dragged.
+     * @param event The mouse event to listen for.
+     * @param node The node on which to listen for an event.
+     */
     public void dragging(MouseEvent event, Node node)
     {
         Stage stage = (Stage) node.getScene().getWindow();
