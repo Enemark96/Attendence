@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package attendence.gui.controller;
 
 import attendence.be.Person;
@@ -116,10 +111,7 @@ public class LoginViewController extends Dragable implements Initializable
     }
 
     private void checkUserInput(String userName, String password)
-    {
-        Stage primaryStage = (Stage) txtUser.getScene().getWindow();
-        
-        
+    {    
         for (Person person : people)
         {
             if (userName.equals(person.getUserName()) && password.equals(person.getPassword()))
@@ -153,19 +145,6 @@ public class LoginViewController extends Dragable implements Initializable
         }
     }
 
-//    private void checkIfTeacher(String usernameInput, String passwordInput) throws IOException
-//    {
-//        for (Teacher teacher : teachers)
-//        {
-//            if (usernameInput.equals(teacher.getUserName()) && passwordInput.equals(teacher.getPassword()))
-//            {
-//                teacherModel.setCurrentUser(teacher);
-//                loadStage("/attendence/gui/view/TeacherView.fxml", "Teacher");
-//            }
-//            else if ()
-//        }
-//    }
-
     private void loadStage(String viewPath, String title) throws IOException
     {
         Stage primaryStage = (Stage) txtUser.getScene().getWindow();
@@ -182,29 +161,4 @@ public class LoginViewController extends Dragable implements Initializable
         
         newStage.show();
     }
-
-//    private void checkIfStudent(String usernameInput, String passwordInput) throws IOException
-//    {
-//        for (Student student : students)
-//        {
-//            if (usernameInput.equals(student.getUserName()) && passwordInput.equals(student.getPassword()))
-//            {
-//                studentModel.setCurrentUser(student);
-//                Stage primaryStage = (Stage) txtUser.getScene().getWindow();
-//                FXMLLoader loader = new FXMLLoader(getClass().getResource("/attendence/gui/view/StudentView.fxml"));
-//                Parent root = loader.load();
-//                primaryStage.close();
-//
-//                Stage newStage = new Stage(StageStyle.UNDECORATED);
-//                newStage.setScene(new Scene(root));
-//
-//                newStage.initModality(Modality.WINDOW_MODAL);
-//                newStage.initOwner(primaryStage);
-//                newStage.setTitle("Student");
-//
-//                newStage.show();
-//
-//            }
-//        }
-//    }
 }
