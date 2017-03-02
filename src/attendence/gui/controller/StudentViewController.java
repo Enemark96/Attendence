@@ -7,9 +7,9 @@ package attendence.gui.controller;
 
 import attendence.be.Absence;
 import attendence.bll.PersonManager;
+import attendence.gui.model.DateTimeModel;
 import attendence.gui.model.StudentModel;
 import java.net.URL;
-import java.time.Month;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -29,12 +29,14 @@ import javafx.stage.Stage;
  *
  * @author Jacob Enemark
  */
-public class StudentViewController extends Dragable implements Initializable {
+public class StudentViewController extends Dragable implements Initializable
+{
 
-    private ObservableList data;
-    StudentModel model;
-    PersonManager manager = new PersonManager();
-    List<Absence> absences;
+    private final ObservableList data;
+    private final StudentModel model;
+    private final DateTimeModel dateTimeModel;
+    private final PersonManager manager;
+    private final List<Absence> absences;
 
     @FXML
     private Label lblUser;
@@ -51,9 +53,11 @@ public class StudentViewController extends Dragable implements Initializable {
 
     public StudentViewController()
     {
+        this.manager = new PersonManager();
         this.data = FXCollections.observableArrayList();
         this.absences = manager.getAllAbsence();
         this.model = StudentModel.getInstance();
+        this.dateTimeModel = new DateTimeModel();
 
     }
 
@@ -73,14 +77,7 @@ public class StudentViewController extends Dragable implements Initializable {
         lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         listMissedClasses.setItems(model.getMissedClassesAsString());
 
-
-        for (Month month : Month.values())
-        {
-            String monthName = month.name().toLowerCase();
-            String upperMonth = capitalize(monthName);
-            comboMonth.getItems().add(upperMonth);
-        }
-
+        comboMonth.setItems(dateTimeModel.getFormattedMonths());
 
         updateChart();
     }
@@ -102,23 +99,6 @@ public class StudentViewController extends Dragable implements Initializable {
         }
     }
 
-    private boolean checkedIn()
-    {
-        return "Check-out".equals(btnCheckIn.getText());
-    }
-
-    private void updateChart()
-    {
-
-        data.add(new PieChart.Data("ITO", 10));
-        data.add(new PieChart.Data("SDE", 5));
-        data.add(new PieChart.Data("SCO", 10));
-        data.add(new PieChart.Data("DB", 10));
-        data.add(new PieChart.Data("Attendence", 65));
-        absenceChart.setData(data);
-
-    }
-
     @FXML
     private void closeWindow()
     {
@@ -137,9 +117,21 @@ public class StudentViewController extends Dragable implements Initializable {
     {
         startDrag(event);
     }
-    
-     private String capitalize(final String line)
+
+    private boolean checkedIn()
     {
-        return Character.toUpperCase(line.charAt(0)) + line.substring(1);
+        return "Check-out".equals(btnCheckIn.getText());
+    }
+
+    private void updateChart()
+    {
+
+        data.add(new PieChart.Data("ITO", 10));
+        data.add(new PieChart.Data("SDE", 5));
+        data.add(new PieChart.Data("SCO", 10));
+        data.add(new PieChart.Data("DB", 10));
+        data.add(new PieChart.Data("Attendence", 65));
+        absenceChart.setData(data);
+
     }
 }

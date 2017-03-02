@@ -1,34 +1,38 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package attendence.bll;
 
+import attendence.be.Absence;
+import attendence.be.Person;
+import attendence.be.Student;
+import attendence.be.Teacher;
 import attendence.dal.PersonDAO;
 import java.util.List;
 
 /**
  *
- * @author Jacob Enemark
+ * @author Simon Birkedal, Stephan Fuhlendorff, Thomas Hansen & Jacob Enemark
  */
-public class PersonManager {
-    
-    PersonDAO personDAO = PersonDAO.getInstance();
-    
+public class PersonManager
+{
 
-    public List getAllStudents()
+    PersonDAO personDAO = PersonDAO.getInstance();
+
+    public List<Student> getAllStudents()
     {
         return personDAO.getAllStudents();
     }
-    
-     public List getAllTeachers()
+
+    public List<Teacher> getAllTeachers()
     {
         return personDAO.getAllTeachers();
     }
-     
-     public List getAllAbsence()
-     {
-         return personDAO.getAllAbsence();
-     }
+
+    public List<Absence> getAllAbsence()
+    {
+        return personDAO.getAllAbsence();
+    }
+
+    public List<Person> getAllPeople()
+    {
+        return personDAO.getAllPeople();
+    }
 }

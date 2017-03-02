@@ -11,9 +11,10 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author James
+ * @author Simon Birkedal, Stephan Fuhlendorff, Thomas Hansen & Jacob Enemark
  */
-public abstract class Dragable {
+public abstract class Dragable
+{
 
     public double xOffset = 0;
     public double yOffset = 0;
