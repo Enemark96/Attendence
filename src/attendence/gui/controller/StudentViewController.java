@@ -7,6 +7,7 @@ package attendence.gui.controller;
 
 import attendence.be.Absence;
 import attendence.bll.PersonManager;
+import attendence.gui.model.DateTimeModel;
 import attendence.gui.model.StudentModel;
 import java.net.URL;
 import java.util.List;
@@ -21,7 +22,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.stage.Stage;
 
 /**
@@ -29,13 +29,14 @@ import javafx.stage.Stage;
  *
  * @author Jacob Enemark
  */
-public class StudentViewController implements Initializable
+public class StudentViewController extends Dragable implements Initializable
 {
 
-    private ObservableList data;
-    StudentModel model;
-    PersonManager manager = new PersonManager();
-    List<Absence> absences;
+    private final ObservableList data;
+    private final StudentModel model;
+    private final DateTimeModel dateTimeModel;
+    private final PersonManager manager;
+    private final List<Absence> absences;
 
     @FXML
     private Label lblUser;
@@ -49,12 +50,14 @@ public class StudentViewController implements Initializable
     private Button closeButton;
     @FXML
     private ComboBox<String> comboMonth;
-    
+
     public StudentViewController()
     {
+        this.manager = new PersonManager();
         this.data = FXCollections.observableArrayList();
         this.absences = manager.getAllAbsence();
         this.model = StudentModel.getInstance();
+        this.dateTimeModel = new DateTimeModel();
 
     }
 
@@ -73,9 +76,8 @@ public class StudentViewController implements Initializable
         }
         lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         listMissedClasses.setItems(model.getMissedClassesAsString());
-        
-           comboMonth.getItems().add("January");
-   comboMonth.getItems().add("Febuary");
+
+        comboMonth.setItems(dateTimeModel.getFormattedMonths());
 
         updateChart();
     }
@@ -86,22 +88,40 @@ public class StudentViewController implements Initializable
         if (checkedIn())
         {
             btnCheckIn.setText("Check-in");
-             btnCheckIn.setStyle("-fx-background-color : LIGHTGREEN;");
-             lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName()); 
+            btnCheckIn.setStyle("-fx-background-color : LIGHTGREEN;");
+            lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         }
         else
         {
             btnCheckIn.setText("Check-out");
             btnCheckIn.setStyle("-fx-background-color : #FF0033;");
-           lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName() + ", you are now cheked-in");
+            lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName() + ", you are now cheked-in");
         }
+    }
+
+    @FXML
+    private void closeWindow()
+    {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
+    }
+
+    @FXML
+    private void drag(MouseEvent event)
+    {
+        dragging(event, lblUser);
+    }
+
+    @FXML
+    private void setOffset(MouseEvent event)
+    {
+        startDrag(event);
     }
 
     private boolean checkedIn()
     {
         return "Check-out".equals(btnCheckIn.getText());
     }
-
 
     private void updateChart()
     {
@@ -113,12 +133,5 @@ public class StudentViewController implements Initializable
         data.add(new PieChart.Data("Attendence", 65));
         absenceChart.setData(data);
 
-    }
-
-    @FXML
-    private void closeWindow()
-    {
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
     }
 }

@@ -15,9 +15,11 @@ import javafx.collections.ObservableList;
  *
  * @author James
  */
-public class StudentModel {
-    Student currentUser;
-    List<Absence> missedClasses;
+public class StudentModel
+{
+
+    private Student currentUser;
+    private List<Absence> missedClasses;
 
     private static StudentModel instance;
 
@@ -40,14 +42,14 @@ public class StudentModel {
     {
         return missedClasses;
     }
-    
+
     public ObservableList<String> getMissedClassesAsString()
     {
-        
+
         ObservableList<String> returnList = FXCollections.observableArrayList();
         for (Absence missedClass : missedClasses)
         {
-            String date = missedClass.getDate()+"";
+            String date = missedClass.getDate() + "";
             date = date.substring(0, 10);
             returnList.add(date);
         }
@@ -58,13 +60,12 @@ public class StudentModel {
     {
         this.missedClasses = missedClasses;
     }
-    
-    public void addMissedClass(Absence miss){
+
+    public void addMissedClass(Absence miss)
+    {
         missedClasses.add(miss);
     }
-    
-    
-    
+
     public Student getCurrentUser()
     {
         return currentUser;
@@ -74,5 +75,5 @@ public class StudentModel {
     {
         this.currentUser = currentUser;
     }
-    
+
 }
