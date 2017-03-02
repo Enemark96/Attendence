@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package attendence.be;
 
 /**
  *
  * @author James
  */
-public abstract class Person {
+public abstract class Person
+{
 
     int id;
     String firstName;
@@ -25,7 +21,7 @@ public abstract class Person {
         this.username = username;
         this.password = password;
     }
-    
+
     public int getId()
     {
         return id;
@@ -56,12 +52,12 @@ public abstract class Person {
         this.lastName = lastName;
     }
 
-    public String getUsername()
+    public String getUserName()
     {
         return username;
     }
 
-    public void setUsername(String username)
+    public void setUserName(String username)
     {
         this.username = username;
     }

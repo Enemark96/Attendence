@@ -8,9 +8,9 @@ package attendence.gui.controller;
 import attendence.be.Absence;
 import attendence.be.Student;
 import attendence.bll.PersonManager;
+import attendence.gui.model.DateTimeModel;
 import attendence.gui.model.TeacherModel;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -28,14 +28,19 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
+ * The controller for the teacher view.
  *
- * @author Jacob Enemark
+ * @author Simon Birkedal, Stephan Fuhlendorff, Thomas Hansen & Jacob Enemark
  */
-public class TeacherViewController extends Dragable implements Initializable {
+public class TeacherViewController extends Dragable implements Initializable
+{
 
-    TeacherModel model;
-    PersonManager manager;
+    private final TeacherModel model;
+    private final PersonManager manager;
+    private final DateTimeModel dateTimeModel;
+    private final List<Student> studentList;
+    private final List<Absence> absenceList;
+    private final ObservableList<Student> allStudents;
 
     @FXML
     private Label lblUsername;
@@ -45,10 +50,6 @@ public class TeacherViewController extends Dragable implements Initializable {
     private TableColumn<Student, String> colStudent;
     @FXML
     private TableColumn<Student, String> colAbsence;
-
-    List<Student> studentList;
-    List<Absence> absenceList;
-    ObservableList<Student> allStudents;
     @FXML
     private Button closeButton;
     @FXML
@@ -58,6 +59,9 @@ public class TeacherViewController extends Dragable implements Initializable {
     @FXML
     private ComboBox<String> comboDate;
 
+    /**
+     * The default constructor for the TeacherViewController.
+     */
     public TeacherViewController()
     {
         this.manager = new PersonManager();
@@ -65,6 +69,7 @@ public class TeacherViewController extends Dragable implements Initializable {
         this.absenceList = manager.getAllAbsence();
         this.allStudents = FXCollections.observableArrayList();
         this.model = TeacherModel.getInstance();
+        dateTimeModel = new DateTimeModel();
         allStudents.addAll(studentList);
     }
 
@@ -88,7 +93,7 @@ public class TeacherViewController extends Dragable implements Initializable {
                     x++;
                 }
             }
-            student.setAmountOfAbsence(x);
+            student.setTotalAbsence(x);
         }
         colAbsence.setCellValueFactory(new PropertyValueFactory<>("amountOfAbsence"));
         fillComboBoxes();
@@ -103,49 +108,6 @@ public class TeacherViewController extends Dragable implements Initializable {
 
     }
 
-    private void fillComboBoxes()
-    {
-        comboClass.getItems().add("CS2016A");
-        comboClass.getItems().add("CS2016B");
-
-        for (Month month : Month.values())
-        {
-            String monthName = month.name().toLowerCase();
-            String upperMonth = capitalize(monthName);
-            comboMonth.getItems().add(upperMonth);
-        }
-
-        getCurrentDate();
-    }
-
-    private void getCurrentDate()
-    {
-        String monthOfYear = LocalDateTime.now().toLocalDate().getMonth().name().toLowerCase();
-        String uppermonth = capitalize(monthOfYear);
-        int dayOfMonth = LocalDateTime.now().toLocalDate().getDayOfMonth();
-        comboMonth.setValue(uppermonth);
-        comboDate.setValue("" + dayOfMonth);
-    }
-
-    private void updateDateInfo()
-    {
-        comboMonth.valueProperty().addListener((listener, oldVal, newVal)
-                -> 
-                {
-                    comboDate.getItems().clear();
-                    for (Month month : Month.values())
-                    {
-                        if (newVal.toLowerCase().equals(month.toString().toLowerCase()))
-                        {
-                            for (int i = 0; i < month.maxLength(); i++)
-                            {
-                                comboDate.getItems().add("" + (i + 1));
-                            }
-                        }
-                    }
-        });
-    }
-
     @FXML
     private void drag(MouseEvent event)
     {
@@ -158,9 +120,37 @@ public class TeacherViewController extends Dragable implements Initializable {
         startDrag(event);
     }
 
-    private String capitalize(final String line)
+    private void fillComboBoxes()
     {
-        return Character.toUpperCase(line.charAt(0)) + line.substring(1);
+        comboClass.getItems().add("CS2016A");
+        comboClass.getItems().add("CS2016B");
+
+        comboMonth.setItems(dateTimeModel.getFormattedMonths());
+
+        getCurrentDate();
     }
 
+    private void getCurrentDate()
+    {
+        comboMonth.setValue(dateTimeModel.getCurrentMonth());
+        comboDate.setValue("" + dateTimeModel.getCurrentDayOfMonth());
+    }
+
+    private void updateDateInfo()
+    {
+        comboMonth.valueProperty().addListener((listener, oldVal, newVal) ->
+        {
+            comboDate.getItems().clear();
+            for (Month month : Month.values())
+            {
+                if (newVal.toLowerCase().equals(month.toString().toLowerCase()))
+                {
+                    for (int i = 0; i < month.maxLength(); i++)
+                    {
+                        comboDate.getItems().add("" + (i + 1));
+                    }
+                }
+            }
+        });
+    }
 }

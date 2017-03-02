@@ -9,10 +9,11 @@ package attendence.be;
  *
  * @author Jacob Enemark
  */
-public class Student extends Person {
+public class Student extends Person
+{
 
     String className;
-    int amountOfAbsence;
+    int totalAbsence;
 
     public Student(int id, String firstName, String lastName, String username, String password, String className)
     {
@@ -30,16 +31,14 @@ public class Student extends Person {
         this.className = className;
     }
 
-    public void setAmountOfAbsence(int amountOfAbsence)
+    public void setTotalAbsence(int totalAbsence)
     {
-        this.amountOfAbsence = amountOfAbsence;
+        this.totalAbsence = totalAbsence;
     }
 
-    public int getAmountOfAbsence()
+    public int getTotalAbsence()
     {
-        return amountOfAbsence;
+        return totalAbsence;
     }
-    
-    
 
 }
