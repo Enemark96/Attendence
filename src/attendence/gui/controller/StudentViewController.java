@@ -14,14 +14,17 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -50,6 +53,8 @@ public class StudentViewController extends Dragable implements Initializable
     private Button closeButton;
     @FXML
     private ComboBox<String> comboMonth;
+    @FXML
+    private Label labelProcent;
 
     public StudentViewController()
     {
@@ -90,8 +95,7 @@ public class StudentViewController extends Dragable implements Initializable
             btnCheckIn.setText("Check-in");
             btnCheckIn.setStyle("-fx-background-color : LIGHTGREEN;");
             lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
-        }
-        else
+        } else
         {
             btnCheckIn.setText("Check-out");
             btnCheckIn.setStyle("-fx-background-color : #FF0033;");
@@ -132,6 +136,29 @@ public class StudentViewController extends Dragable implements Initializable
         data.add(new PieChart.Data("DB", 10));
         data.add(new PieChart.Data("Attendence", 65));
         absenceChart.setData(data);
+
+        absenceChart.setLabelLineLength(100);
+        absenceChart.setLegendSide(Side.LEFT);
+
+        labelProcent.setTextFill(Color.DARKORANGE);
+        labelProcent.setStyle("-fx-font: 24 arial;");
+        for (final PieChart.Data data : absenceChart.getData())
+        {
+            data.getNode().addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET,
+                    new EventHandler<MouseEvent>()
+            {
+                @Override
+                public void handle(MouseEvent e)
+                {
+                    labelProcent.setTranslateX(e.getSceneX() - 180);
+                    labelProcent.setTranslateY(e.getSceneY() - 25);
+
+                    labelProcent.setText(String.valueOf(data.getPieValue()) + "%");
+
+                }
+            });
+
+        }
 
     }
 }
