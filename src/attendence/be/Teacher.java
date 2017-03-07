@@ -14,9 +14,9 @@ public class Teacher extends Person
      * @param username The teacher's username.
      * @param password The password matching the teacher's username.
      */
-    public Teacher(int id, String firstName, String lastName, String username, String password)
+    public Teacher(int id, String firstName, String lastName, String email, String username, String password, String phoneNum)
     {
-        super(id, firstName, lastName, username, password);
+        super(id, firstName, lastName, email, username, password, phoneNum);
     }
 
 }

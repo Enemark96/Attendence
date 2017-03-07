@@ -12,8 +12,10 @@ public abstract class Person implements Serializable
     private int id;
     private String firstName;
     private String lastName;
+    private String email;
     private String username;
     private String password;
+    private String phoneNum;
 
     /**
      * The default constructor for the person class.
@@ -23,13 +25,15 @@ public abstract class Person implements Serializable
      * @param username The user name of the person.
      * @param password The password to match the username.
      */
-    public Person(int id, String firstName, String lastName, String username, String password)
+    public Person(int id, String firstName, String lastName, String email, String username, String password, String phoneNum)
     {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
         this.username = username;
         this.password = password;
+        this.phoneNum = phoneNum;
     }
 
     /**

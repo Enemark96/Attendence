@@ -8,11 +8,14 @@ package attendence.dal;
 import attendence.be.Person;
 import attendence.be.Student;
 import attendence.be.Teacher;
+import attendence.bll.DateTimeManager;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +26,8 @@ import java.util.List;
 public class DBManager {
 
     ConnectionManager cm;
-    
+    DateTimeManager DTMan;
+
     List<Student> students = new ArrayList<>();
     List<Teacher> teachers = new ArrayList<>();
 
@@ -33,13 +37,9 @@ public class DBManager {
         setAllPeople();
     }
 
-    
-    
-    
     public void setAllPeople() throws SQLException
     {
-        String sql = "SELECT ID, FirstName, LastName, UNILogin, Password, IsStudent, Class FROM People";
-//        String sql = "SELECT * FROM People";
+        String sql = "SELECT * FROM People";
 
         try (Connection con = cm.getConnection())
         {
@@ -48,19 +48,40 @@ public class DBManager {
             while (rs.next())
             {
                 int id = rs.getInt(1);
-                    String fName = rs.getString(2);
-                    String lName = rs.getString(3);
-                    String user = rs.getString(4);
-                    String pass = rs.getString(5);
+                String fName = rs.getString(2);
+                String lName = rs.getString(3);
+                String email = rs.getString(4);
+                String user = rs.getString(5);
+                String pass = rs.getString(6);
+                String phoneNum = rs.getString(7);
                 if (rs.getBoolean("IsStudent"))
                 {
-                    
-                    String cName = rs.getString(6);
-
-                    Student student = new Student(id, fName, lName, user, pass, cName);
+                    Timestamp lastCheckin;
+                    Timestamp lastCheckout;
+                    String cName = rs.getString(9);
+                    if (rs.getDate(10) != null)
+                    {
+                        lastCheckin = rs.getTimestamp(10);
+                    }
+                    else
+                    {
+                        lastCheckin = null;
+                    }
+                    if (rs.getDate(11) != null)
+                    {
+                        lastCheckout = rs.getTimestamp(11);
+                    }
+                    else
+                    {
+                        lastCheckout = null;
+                    }
+                    System.out.println(lastCheckin);
+                    Student student = new Student(id, fName, lName, email, user, pass, phoneNum, cName, lastCheckin, lastCheckout);
                     students.add(student);
-                }else{
-                    Teacher teacher = new Teacher(id, fName, lName, user, pass);
+                }
+                else
+                {
+                    Teacher teacher = new Teacher(id, fName, lName, email, user, pass, phoneNum);
                     teachers.add(teacher);
                 }
             }
@@ -77,7 +98,7 @@ public class DBManager {
     {
         return teachers;
     }
-    
+
     public List<Person> getPeople()
     {
         ArrayList<Person> people = new ArrayList<>();
@@ -87,5 +108,30 @@ public class DBManager {
 
         return people;
     }
-    
+
+    public void updateCheckIn(Student student) throws SQLException
+    {
+        String sql = "UPDATE People SET LastCheckedIn = ? WHERE ID = ?";
+
+        try (Connection con = cm.getConnection())
+        {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setTimestamp(1, (Timestamp) student.getLastCheckIn());
+            ps.setInt(2, student.getId());
+            ps.executeUpdate();
+        }
+    }
+    public void updateCheckOut(Student student) throws SQLException
+    {
+        String sql = "UPDATE People SET LastCheckedOut = ? WHERE ID = ?";
+
+        try (Connection con = cm.getConnection())
+        {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setTimestamp(1, (Timestamp) student.getLastCheckOut());
+            ps.setInt(2, student.getId());
+            ps.executeUpdate();
+        }
+    }
+
 }
