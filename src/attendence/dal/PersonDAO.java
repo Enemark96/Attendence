@@ -41,33 +41,33 @@ public class PersonDAO {
     {
         List<Student> returnList = new ArrayList<>();
 
-        try (BufferedReader CSVFile = new BufferedReader(
-                new FileReader("Students.csv")))
-        {
-            CSVFile.readLine(); // Skip first line (header)
-            String line = CSVFile.readLine();
-            while (line != null)
-            {
-                Random r = new Random();
-                char c = (char) (r.nextInt(26) + 'a');
-                int num = r.nextInt(4);
-                String[] dataArray = line.split(",");
-                returnList.add(new Student(
-                        Integer.parseInt(dataArray[0]),
-                        dataArray[1].trim(),
-                        dataArray[2].trim(),
-                        dataArray[3].trim(),
-                        dataArray[4].trim(),
-                        c + num + ""));
-                line = CSVFile.readLine();
-            }
-
-        }
-        catch (IOException ex)
-        {
-            System.out.println(ex);
-            return null;
-        }
+//        try (BufferedReader CSVFile = new BufferedReader(
+//                new FileReader("Students.csv")))
+//        {
+//            CSVFile.readLine(); // Skip first line (header)
+//            String line = CSVFile.readLine();
+//            while (line != null)
+//            {
+//                Random r = new Random();
+//                char c = (char) (r.nextInt(26) + 'a');
+//                int num = r.nextInt(4);
+//                String[] dataArray = line.split(",");
+//                returnList.add(new Student(
+//                        Integer.parseInt(dataArray[0]),
+//                        dataArray[1].trim(),
+//                        dataArray[2].trim(),
+//                        dataArray[3].trim(),
+//                        dataArray[4].trim(),
+//                        c + num + ""));
+//                line = CSVFile.readLine();
+//            }
+//
+//        }
+//        catch (IOException ex)
+//        {
+//            System.out.println(ex);
+//            return null;
+//        }
 //         returnList.add(new Patient(1, "ew","ewqeqw","ewq"));
         return returnList;
     }
@@ -76,29 +76,29 @@ public class PersonDAO {
     {
         List<Teacher> returnList = new ArrayList<>();
 
-        try (BufferedReader CSVFile = new BufferedReader(
-                new FileReader("Teachers.csv")))
-        {
-            CSVFile.readLine(); // Skip first line (header)
-            String line = CSVFile.readLine();
-            while (line != null)
-            {
-                String[] dataArray = line.split(",");
-                returnList.add(new Teacher(
-                        Integer.parseInt(dataArray[0]),
-                        dataArray[1].trim(),
-                        dataArray[2].trim(),
-                        dataArray[3].trim(),
-                        dataArray[4].trim()));
-                line = CSVFile.readLine();
-            }
-
-        }
-        catch (IOException ex)
-        {
-            System.out.println(ex);
-            return null;
-        }
+//        try (BufferedReader CSVFile = new BufferedReader(
+//                new FileReader("Teachers.csv")))
+//        {
+//            CSVFile.readLine(); // Skip first line (header)
+//            String line = CSVFile.readLine();
+//            while (line != null)
+//            {
+//                String[] dataArray = line.split(",");
+//                returnList.add(new Teacher(
+//                        Integer.parseInt(dataArray[0]),
+//                        dataArray[1].trim(),
+//                        dataArray[2].trim(),
+//                        dataArray[3].trim(),
+//                        dataArray[4].trim()));
+//                line = CSVFile.readLine();
+//            }
+//
+//        }
+//        catch (IOException ex)
+//        {
+//            System.out.println(ex);
+//            return null;
+//        }
         return returnList;
     }
 
