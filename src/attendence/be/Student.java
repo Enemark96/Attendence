@@ -1,34 +1,39 @@
 package attendence.be;
 
+import java.util.Date;
+
 /**
  *
  * @author Jacob Enemark
  */
-public class Student extends Person
-{
+public class Student extends Person {
 
     private String className;
     private int totalAbsence;
+    private Date lastLogin;
 
     /**
      * The default constructor for the student class.
+     *
      * @param id The id of the student.
      * @param firstName The student's first name.
      * @param lastName The student's last name.
      * @param username The student's user name.
      * @param password The password matching the student's user name.
      * @param className The student's class name, that is the name of the class
-     * in which the student participates. e.g. A
+     * @param lastLogin in which the student participates. e.g. A
      */
-    public Student(int id, String firstName, String lastName, String username, String password, String className)
+    public Student(int id, String firstName, String lastName, String email, String username, String password, String phoneNum, String className, Date lastLogin)
     {
-        super(id, firstName, lastName, username, password);
+        super(id, firstName, lastName, email, username, password, phoneNum);
         this.className = className;
+        this.lastLogin = lastLogin;
     }
 
     /**
      * Gets the class name of the student.
-     * @return 
+     *
+     * @return
      */
     public String getClassName()
     {
@@ -37,6 +42,7 @@ public class Student extends Person
 
     /**
      * Sets the class name of the student.
+     *
      * @param className The class name.
      */
     public void setClassName(String className)
@@ -46,6 +52,7 @@ public class Student extends Person
 
     /**
      * Sets the student's total absence.
+     *
      * @param totalAbsence The total absence.
      */
     public void setTotalAbsence(int totalAbsence)
@@ -55,7 +62,9 @@ public class Student extends Person
 
     /**
      * Gets the student's total absence.
-     * @return Returns the student's total absence represented by an integer value.
+     *
+     * @return Returns the student's total absence represented by an integer
+     * value.
      */
     public int getTotalAbsence()
     {
