@@ -58,6 +58,6 @@ public class PersonManager
      */
     public List<Person> getAllPeople()
     {
-        return personDAO.getAllPeople();
+        return dbManager.getPeople();
     }
 }

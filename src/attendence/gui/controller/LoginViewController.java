@@ -18,6 +18,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -104,74 +106,41 @@ public class LoginViewController extends Dragable implements Initializable {
     {
         String usernameInput = txtUser.getText();
         String passwordInput = txtPass.getText();
-        checkUserInput(usernameInput, passwordInput);
+        try
+        {
+            checkUserInput(usernameInput, passwordInput);
+        }
+        catch (IOException ex)
+        {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("I/O Error");
+            alert.setHeaderText("");
+            alert.setContentText("The user information you typed can not be found"
+                    + " in our database.");
+
+            alert.showAndWait();
+        }
     }
 
-    private void checkUserInput(String userName, String password)
+    private void checkUserInput(String userName, String password) throws IOException
     {
-        for (Student student : students)
+        for (Person person : people)
         {
-            if (userName.equals(student.getUserName()) && password.equals(student.getPassword()))
+            if (userName.equals(person.getUserName()) && password.equals(person.getPassword()))
             {
-                studentModel.setCurrentUser(student);
-                    try
-                    {
-                        loadStage("/attendence/gui/view/StudentView.fxml", "Student");
-                    }
-                    catch (IOException ex)
-                    {
-                        Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                if (person instanceof Teacher)
+                {
+                    teacherModel.setCurrentUser((Teacher) person);
+                    loadStage("/attendence/gui/view/TeacherView.fxml", "Teacher");
+                }
+
+                else if (person instanceof Student)
+                {
+                    studentModel.setCurrentUser((Student) person);
+                    loadStage("/attendence/gui/view/StudentView.fxml", "Student");
+                }               
             }
         }
-        
-        for (Teacher teacher : teachers)
-        {
-             if (userName.equals(teacher.getUserName()) && password.equals(teacher.getPassword()))
-            {
-                teacherModel.setCurrentUser(teacher);
-                    try
-                    {
-                        loadStage("/attendence/gui/view/TeacherView.fxml", "Teacher");
-                    }
-                    catch (IOException ex)
-                    {
-                        Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-            }
-        }
-        
-//        for (Person person : people)
-//        {
-//            if (userName.equals(person.getUserName()) && password.equals(person.getPassword()))
-//            {
-//                if (person instanceof Teacher)
-//                {
-//                    teacherModel.setCurrentUser((Teacher) person);
-//                    try
-//                    {
-//                        loadStage("/attendence/gui/view/TeacherView.fxml", "Teacher");
-//                    }
-//                    catch (IOException ex)
-//                    {
-//                        Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                }
-//
-//                else if (person instanceof Student)
-//                {
-//                    studentModel.setCurrentUser((Student) person);
-//                    try
-//                    {
-//                        loadStage("/attendence/gui/view/StudentView.fxml", "Student");
-//                    }
-//                    catch (IOException ex)
-//                    {
-//                        Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                }
-//            }
-//        }
     }
 
     private void loadStage(String viewPath, String title) throws IOException
