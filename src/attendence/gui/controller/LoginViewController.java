@@ -4,8 +4,10 @@ import attendence.be.Person;
 import attendence.be.Student;
 import attendence.be.Teacher;
 import attendence.bll.PersonManager;
+import attendence.gui.model.LoginModel;
 import attendence.gui.model.StudentModel;
 import attendence.gui.model.TeacherModel;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -33,11 +37,14 @@ import javafx.stage.StageStyle;
  *
  * @author Simon Birkedal, Stephan Fuhlendorff, Thomas Hansen & Jacob Enemark
  */
-public class LoginViewController extends Dragable implements Initializable {
+public class LoginViewController extends Dragable implements Initializable
+{
 
+    Person loadedPerson;
     private final PersonManager manager;
     private final StudentModel studentModel;
     private final TeacherModel teacherModel;
+    private LoginModel loginModel;
     private final List<Person> people;
     private final List<Student> students;
     private final List<Teacher> teachers;
@@ -50,15 +57,23 @@ public class LoginViewController extends Dragable implements Initializable {
     private Button closeButton;
     @FXML
     private BorderPane bp;
+    @FXML
+    private CheckBox checkBoxRemember;
 
     public LoginViewController() throws SQLException, IOException
     {
         this.studentModel = StudentModel.getInstance();
         this.teacherModel = TeacherModel.getInstance();
+        loginModel = LoginModel.getInstance();
         this.manager = new PersonManager();
         students = manager.getAllStudents();
         teachers = manager.getAllTeachers();
         people = manager.getAllPeople();
+        loadedPerson =  loginModel.loadLoginData();
+     
+
+      
+
     }
 
     /**
@@ -67,7 +82,9 @@ public class LoginViewController extends Dragable implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        // TODO
+             txtUser.setText(loadedPerson.getUserName());
+            txtPass.setText(loadedPerson.getPassword());
+
     }
 
     @FXML
@@ -76,8 +93,7 @@ public class LoginViewController extends Dragable implements Initializable {
         if (!"".equals(txtUser.getText()) && !"".equals(txtPass.getText()))
         {
             checkLoginInformation();
-        }
-        else
+        } else
         {
             System.out.println("Udfyld venligst brugernavn og kodeord");
         }
@@ -109,8 +125,7 @@ public class LoginViewController extends Dragable implements Initializable {
         try
         {
             checkUserInput(usernameInput, passwordInput);
-        }
-        catch (IOException ex)
+        } catch (IOException ex)
         {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("I/O Error");
@@ -131,14 +146,20 @@ public class LoginViewController extends Dragable implements Initializable {
                 if (person instanceof Teacher)
                 {
                     teacherModel.setCurrentUser((Teacher) person);
+                    if (checkBoxRemember.isSelected())
+                    {
+                        loginModel.saveLoginData(person);
+                    }
                     loadStage("/attendence/gui/view/TeacherView.fxml", "Teacher");
-                }
-
-                else if (person instanceof Student)
+                } else if (person instanceof Student)
                 {
                     studentModel.setCurrentUser((Student) person);
+                    if (checkBoxRemember.isSelected())
+                    {
+                        loginModel.saveLoginData(person);
+                    }
                     loadStage("/attendence/gui/view/StudentView.fxml", "Student");
-                }               
+                }
             }
         }
     }
@@ -159,4 +180,5 @@ public class LoginViewController extends Dragable implements Initializable {
 
         newStage.show();
     }
+
 }

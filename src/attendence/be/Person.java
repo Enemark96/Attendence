@@ -1,10 +1,12 @@
 package attendence.be;
 
+import java.io.Serializable;
+
 /**
  * The person business entity class. This class holds information about the student.
  * @author James
  */
-public abstract class Person
+public abstract class Person implements Serializable
 {
 
     private int id;
