@@ -10,7 +10,9 @@ import attendence.be.Student;
 import attendence.bll.PersonManager;
 import attendence.gui.model.DateTimeModel;
 import attendence.gui.model.TeacherModel;
+import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.Month;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -62,7 +64,7 @@ public class TeacherViewController extends Dragable implements Initializable
     /**
      * The default constructor for the TeacherViewController.
      */
-    public TeacherViewController()
+    public TeacherViewController() throws SQLException, IOException
     {
         this.manager = new PersonManager();
         this.studentList = manager.getAllStudents();
