@@ -8,6 +8,7 @@ import attendence.gui.model.StudentModel;
 import attendence.gui.model.TeacherModel;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -48,7 +49,7 @@ public class LoginViewController extends Dragable implements Initializable {
     @FXML
     private BorderPane bp;
 
-    public LoginViewController()
+    public LoginViewController() throws SQLException, IOException
     {
         this.studentModel = StudentModel.getInstance();
         this.teacherModel = TeacherModel.getInstance();
@@ -108,26 +109,11 @@ public class LoginViewController extends Dragable implements Initializable {
 
     private void checkUserInput(String userName, String password)
     {
-        for (Person person : people)
+        for (Student student : students)
         {
-            if (userName.equals(person.getUserName()) && password.equals(person.getPassword()))
+            if (userName.equals(student.getUserName()) && password.equals(student.getPassword()))
             {
-                if (person instanceof Teacher)
-                {
-                    teacherModel.setCurrentUser((Teacher) person);
-                    try
-                    {
-                        loadStage("/attendence/gui/view/TeacherView.fxml", "Teacher");
-                    }
-                    catch (IOException ex)
-                    {
-                        Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-
-                else if (person instanceof Student)
-                {
-                    studentModel.setCurrentUser((Student) person);
+                studentModel.setCurrentUser(student);
                     try
                     {
                         loadStage("/attendence/gui/view/StudentView.fxml", "Student");
@@ -136,9 +122,56 @@ public class LoginViewController extends Dragable implements Initializable {
                     {
                         Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
             }
         }
+        
+        for (Teacher teacher : teachers)
+        {
+             if (userName.equals(teacher.getUserName()) && password.equals(teacher.getPassword()))
+            {
+                teacherModel.setCurrentUser(teacher);
+                    try
+                    {
+                        loadStage("/attendence/gui/view/TeacherView.fxml", "Teacher");
+                    }
+                    catch (IOException ex)
+                    {
+                        Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+            }
+        }
+        
+//        for (Person person : people)
+//        {
+//            if (userName.equals(person.getUserName()) && password.equals(person.getPassword()))
+//            {
+//                if (person instanceof Teacher)
+//                {
+//                    teacherModel.setCurrentUser((Teacher) person);
+//                    try
+//                    {
+//                        loadStage("/attendence/gui/view/TeacherView.fxml", "Teacher");
+//                    }
+//                    catch (IOException ex)
+//                    {
+//                        Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//
+//                else if (person instanceof Student)
+//                {
+//                    studentModel.setCurrentUser((Student) person);
+//                    try
+//                    {
+//                        loadStage("/attendence/gui/view/StudentView.fxml", "Student");
+//                    }
+//                    catch (IOException ex)
+//                    {
+//                        Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//            }
+//        }
     }
 
     private void loadStage(String viewPath, String title) throws IOException
