@@ -5,6 +5,7 @@
  */
 package attendence.dal;
 
+import attendence.be.Person;
 import attendence.be.Student;
 import attendence.be.Teacher;
 import java.io.IOException;
@@ -77,5 +78,14 @@ public class DBManager {
         return teachers;
     }
     
+    public List<Person> getPeople()
+    {
+        ArrayList<Person> people = new ArrayList<>();
+
+        people.addAll(getStudents());
+        people.addAll(getTeachers());
+
+        return people;
+    }
     
 }
