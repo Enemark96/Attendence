@@ -7,6 +7,7 @@ package attendence.dal;
 
 import attendence.be.Student;
 import attendence.be.Teacher;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,11 +23,12 @@ public class DBManager {
 
     ConnectionManager cm;
     
-    List<Student> students;
-    List<Teacher> teachers;
+    List<Student> students = new ArrayList<>();
+    List<Teacher> teachers = new ArrayList<>();
 
-    public DBManager() throws SQLException
+    public DBManager() throws SQLException, IOException
     {
+        this.cm = new ConnectionManager();
         setAllPeople();
     }
 
@@ -35,14 +37,13 @@ public class DBManager {
     
     public void setAllPeople() throws SQLException
     {
-//        String sql = "SELECT ID, FirstName, LastName, UNILogin, Password, IsStudent, Class FROM People";
-        String sql = "SELECT * FROM People";
+        String sql = "SELECT ID, FirstName, LastName, UNILogin, Password, IsStudent, Class FROM People";
+//        String sql = "SELECT * FROM People";
 
         try (Connection con = cm.getConnection())
         {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
-
             while (rs.next())
             {
                 int id = rs.getInt(1);
