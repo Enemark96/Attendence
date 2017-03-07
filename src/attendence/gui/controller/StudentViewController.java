@@ -9,7 +9,9 @@ import attendence.be.Absence;
 import attendence.bll.PersonManager;
 import attendence.gui.model.DateTimeModel;
 import attendence.gui.model.StudentModel;
+import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -56,7 +58,7 @@ public class StudentViewController extends Dragable implements Initializable
     @FXML
     private Label labelProcent;
 
-    public StudentViewController()
+    public StudentViewController() throws SQLException, IOException
     {
         this.manager = new PersonManager();
         this.data = FXCollections.observableArrayList();
