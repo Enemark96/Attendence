@@ -12,6 +12,9 @@ import attendence.gui.model.StudentModel;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -90,7 +93,7 @@ public class StudentViewController extends Dragable implements Initializable
     }
 
     @FXML
-    private void handleCheckIn()
+    private void handleCheckIn() throws SQLException
     {
         if (checkedIn())
         {
@@ -102,6 +105,8 @@ public class StudentViewController extends Dragable implements Initializable
             btnCheckIn.setText("Check-out");
             btnCheckIn.setStyle("-fx-background-color : #FF0033;");
             lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName() + ", you are now cheked-in");
+            model.getCurrentUser().setLastLogin(Timestamp.valueOf(LocalDateTime.now()));
+            manager.updatecheckIn(model.getCurrentUser());
         }
     }
 

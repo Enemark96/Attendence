@@ -1,6 +1,7 @@
 package attendence.be;
 
 import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -10,7 +11,7 @@ public class Student extends Person {
 
     private String className;
     private int totalAbsence;
-    private Date lastLogin;
+    private Timestamp lastLogin;
 
     /**
      * The default constructor for the student class.
@@ -23,7 +24,7 @@ public class Student extends Person {
      * @param className The student's class name, that is the name of the class
      * @param lastLogin in which the student participates. e.g. A
      */
-    public Student(int id, String firstName, String lastName, String email, String username, String password, String phoneNum, String className, Date lastLogin)
+    public Student(int id, String firstName, String lastName, String email, String username, String password, String phoneNum, String className, Timestamp lastLogin)
     {
         super(id, firstName, lastName, email, username, password, phoneNum);
         this.className = className;
@@ -70,5 +71,17 @@ public class Student extends Person {
     {
         return totalAbsence;
     }
+
+    public Date getLastLogin()
+    {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Timestamp lastLogin)
+    {
+        this.lastLogin = lastLogin;
+    }
+    
+    
 
 }
