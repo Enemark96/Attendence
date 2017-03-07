@@ -30,8 +30,7 @@ import javafx.stage.StageStyle;
  *
  * @author Simon Birkedal, Stephan Fuhlendorff, Thomas Hansen & Jacob Enemark
  */
-public class LoginViewController extends Dragable implements Initializable
-{
+public class LoginViewController extends Dragable implements Initializable {
 
     private final PersonManager manager;
     private final StudentModel studentModel;
@@ -73,14 +72,11 @@ public class LoginViewController extends Dragable implements Initializable
     {
         if (!"".equals(txtUser.getText()) && !"".equals(txtPass.getText()))
         {
-            try
-            {
-                checkLoginInformation();
-            }
-            catch (IOException ex)
-            {
-                Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            checkLoginInformation();
+        }
+        else
+        {
+            System.out.println("Udfyld venligst brugernavn og kodeord");
         }
     }
 
@@ -103,7 +99,7 @@ public class LoginViewController extends Dragable implements Initializable
         startDrag(event);
     }
 
-    private void checkLoginInformation() throws IOException
+    private void checkLoginInformation()
     {
         String usernameInput = txtUser.getText();
         String passwordInput = txtPass.getText();
@@ -111,7 +107,7 @@ public class LoginViewController extends Dragable implements Initializable
     }
 
     private void checkUserInput(String userName, String password)
-    {    
+    {
         for (Person person : people)
         {
             if (userName.equals(person.getUserName()) && password.equals(person.getPassword()))
@@ -128,7 +124,7 @@ public class LoginViewController extends Dragable implements Initializable
                         Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                
+
                 else if (person instanceof Student)
                 {
                     studentModel.setCurrentUser((Student) person);
@@ -151,14 +147,14 @@ public class LoginViewController extends Dragable implements Initializable
         FXMLLoader loader = new FXMLLoader(getClass().getResource(viewPath));
         Parent root = loader.load();
         primaryStage.close();
-        
+
         Stage newStage = new Stage(StageStyle.UNDECORATED);
         newStage.setScene(new Scene(root));
-        
+
         newStage.initModality(Modality.WINDOW_MODAL);
         newStage.initOwner(primaryStage);
         newStage.setTitle(title);
-        
+
         newStage.show();
     }
 }
