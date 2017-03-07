@@ -56,18 +56,27 @@ public class DBManager {
                 String phoneNum = rs.getString(7);
                 if (rs.getBoolean("IsStudent"))
                 {
-                    Timestamp lastLogin;
+                    Timestamp lastCheckin;
+                    Timestamp lastCheckout;
                     String cName = rs.getString(9);
                     if (rs.getDate(10) != null)
                     {
-                        lastLogin = rs.getTimestamp(10);
+                        lastCheckin = rs.getTimestamp(10);
                     }
                     else
                     {
-                        lastLogin = null;
+                        lastCheckin = null;
                     }
-                    System.out.println(lastLogin);
-                    Student student = new Student(id, fName, lName, email, user, pass, phoneNum, cName, lastLogin);
+                    if (rs.getDate(11) != null)
+                    {
+                        lastCheckout = rs.getTimestamp(11);
+                    }
+                    else
+                    {
+                        lastCheckout = null;
+                    }
+                    System.out.println(lastCheckin);
+                    Student student = new Student(id, fName, lName, email, user, pass, phoneNum, cName, lastCheckin, lastCheckout);
                     students.add(student);
                 }
                 else
@@ -99,13 +108,27 @@ public class DBManager {
 
         return people;
     }
-    
-    public void updatecheckIn(Student student) throws SQLException{
+
+    public void updateCheckIn(Student student) throws SQLException
+    {
         String sql = "UPDATE People SET LastCheckedIn = ? WHERE ID = ?";
-        
-        try(Connection con = cm.getConnection()){
+
+        try (Connection con = cm.getConnection())
+        {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setTimestamp(1, (Timestamp) student.getLastLogin());
+            ps.setTimestamp(1, (Timestamp) student.getLastCheckIn());
+            ps.setInt(2, student.getId());
+            ps.executeUpdate();
+        }
+    }
+    public void updateCheckOut(Student student) throws SQLException
+    {
+        String sql = "UPDATE People SET LastCheckedOut = ? WHERE ID = ?";
+
+        try (Connection con = cm.getConnection())
+        {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setTimestamp(1, (Timestamp) student.getLastCheckOut());
             ps.setInt(2, student.getId());
             ps.executeUpdate();
         }

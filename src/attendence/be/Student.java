@@ -11,7 +11,8 @@ public class Student extends Person {
 
     private String className;
     private int totalAbsence;
-    private Timestamp lastLogin;
+    private Timestamp lastCheckIn;
+    private Timestamp lastCheckOut;
 
     /**
      * The default constructor for the student class.
@@ -24,11 +25,11 @@ public class Student extends Person {
      * @param className The student's class name, that is the name of the class
      * @param lastLogin in which the student participates. e.g. A
      */
-    public Student(int id, String firstName, String lastName, String email, String username, String password, String phoneNum, String className, Timestamp lastLogin)
+    public Student(int id, String firstName, String lastName, String email, String username, String password, String phoneNum, String className, Timestamp lastLogin, Timestamp lastCheckout)
     {
         super(id, firstName, lastName, email, username, password, phoneNum);
         this.className = className;
-        this.lastLogin = lastLogin;
+        this.lastCheckIn = lastLogin;
     }
 
     /**
@@ -72,16 +73,28 @@ public class Student extends Person {
         return totalAbsence;
     }
 
-    public Date getLastLogin()
+    public Timestamp getLastCheckIn()
     {
-        return lastLogin;
+        return lastCheckIn;
     }
 
-    public void setLastLogin(Timestamp lastLogin)
+    public void setLastCheckIn(Timestamp lastCheckIn)
     {
-        this.lastLogin = lastLogin;
+        this.lastCheckIn = lastCheckIn;
     }
-    
+
+    public Timestamp getLastCheckOut()
+    {
+        return lastCheckOut;
+    }
+
+    public void setLastCheckOut(Timestamp lastCheckOut)
+    {
+        this.lastCheckOut = lastCheckOut;
+    }
+
+   
+
     
 
 }

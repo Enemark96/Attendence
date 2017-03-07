@@ -100,13 +100,15 @@ public class StudentViewController extends Dragable implements Initializable
             btnCheckIn.setText("Check-in");
             btnCheckIn.setStyle("-fx-background-color : LIGHTGREEN;");
             lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
+            model.getCurrentUser().setLastCheckOut(Timestamp.valueOf(LocalDateTime.now()));
+            manager.updateCheckOut(model.getCurrentUser());
         } else
         {
             btnCheckIn.setText("Check-out");
             btnCheckIn.setStyle("-fx-background-color : #FF0033;");
             lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName() + ", you are now cheked-in");
-            model.getCurrentUser().setLastLogin(Timestamp.valueOf(LocalDateTime.now()));
-            manager.updatecheckIn(model.getCurrentUser());
+            model.getCurrentUser().setLastCheckIn(Timestamp.valueOf(LocalDateTime.now()));
+            manager.updateCheckIn(model.getCurrentUser());
         }
     }
 
