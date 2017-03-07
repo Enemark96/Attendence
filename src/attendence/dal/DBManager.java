@@ -75,7 +75,6 @@ public class DBManager {
                     {
                         lastCheckout = null;
                     }
-                    System.out.println(lastCheckin);
                     Student student = new Student(id, fName, lName, email, user, pass, phoneNum, cName, lastCheckin, lastCheckout);
                     students.add(student);
                 }
