@@ -11,11 +11,12 @@ import attendence.be.Teacher;
 import attendence.bll.DateTimeManager;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,11 +56,11 @@ public class DBManager {
                 String phoneNum = rs.getString(7);
                 if (rs.getBoolean("IsStudent"))
                 {
-                    Date lastLogin = null;
+                    Timestamp lastLogin;
                     String cName = rs.getString(9);
                     if (rs.getDate(10) != null)
                     {
-                        lastLogin = rs.getDate(10);
+                        lastLogin = rs.getTimestamp(10);
                     }
                     else
                     {
@@ -97,6 +98,17 @@ public class DBManager {
         people.addAll(getTeachers());
 
         return people;
+    }
+    
+    public void updatecheckIn(Student student) throws SQLException{
+        String sql = "UPDATE People SET LastCheckedIn = ? WHERE ID = ?";
+        
+        try(Connection con = cm.getConnection()){
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setTimestamp(1, (Timestamp) student.getLastLogin());
+            ps.setInt(2, student.getId());
+            ps.executeUpdate();
+        }
     }
 
 }
