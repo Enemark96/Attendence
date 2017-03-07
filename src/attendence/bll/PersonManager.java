@@ -61,9 +61,14 @@ public class PersonManager
         return dbManager.getPeople();
     }
 
-    public void updatecheckIn(Student student) throws SQLException
+    public void updateCheckIn(Student student) throws SQLException
     {
-        dbManager.updatecheckIn(student);
+        dbManager.updateCheckIn(student);
+    }
+
+    public void updateCheckOut(Student student) throws SQLException
+    {
+        dbManager.updateCheckOut(student);
     }
 
 }
