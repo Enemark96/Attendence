@@ -4,7 +4,10 @@ import attendence.be.Absence;
 import attendence.be.Person;
 import attendence.be.Student;
 import attendence.be.Teacher;
+import attendence.dal.DBManager;
 import attendence.dal.PersonDAO;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -15,6 +18,12 @@ public class PersonManager
 {
 
     PersonDAO personDAO = PersonDAO.getInstance();
+    DBManager dbManager;
+
+    public PersonManager() throws SQLException, IOException
+    {
+        this.dbManager = new DBManager();
+    }
 
     /**
      * Gets all the students.
@@ -22,7 +31,7 @@ public class PersonManager
      */
     public List<Student> getAllStudents()
     {
-        return personDAO.getAllStudents();
+        return dbManager.getStudents();
     }
 
     /**
@@ -31,7 +40,7 @@ public class PersonManager
      */
     public List<Teacher> getAllTeachers()
     {
-        return personDAO.getAllTeachers();
+        return dbManager.getTeachers();
     }
 
     /**
@@ -49,6 +58,17 @@ public class PersonManager
      */
     public List<Person> getAllPeople()
     {
-        return personDAO.getAllPeople();
+        return dbManager.getPeople();
     }
+
+    public void updateCheckIn(Student student) throws SQLException
+    {
+        dbManager.updateCheckIn(student);
+    }
+
+    public void updateCheckOut(Student student) throws SQLException
+    {
+        dbManager.updateCheckOut(student);
+    }
+
 }
