@@ -40,7 +40,7 @@ import javafx.stage.StageStyle;
 public class LoginViewController extends Dragable implements Initializable
 {
 
-    Person loadedPerson;
+    private Person loadedPerson;
     private final PersonManager manager;
     private final StudentModel studentModel;
     private final TeacherModel teacherModel;
@@ -69,10 +69,7 @@ public class LoginViewController extends Dragable implements Initializable
         students = manager.getAllStudents();
         teachers = manager.getAllTeachers();
         people = manager.getAllPeople();
-        loadedPerson =  loginModel.loadLoginData();
-     
-
-      
+//        loadedPerson =  loginModel.loadLoginData();
 
     }
 
@@ -82,20 +79,22 @@ public class LoginViewController extends Dragable implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-             txtUser.setText(loadedPerson.getUserName());
-            txtPass.setText(loadedPerson.getPassword());
+//             txtUser.setText(loadedPerson.getUserName());
+//            txtPass.setText(loadedPerson.getPassword());
 
     }
 
     @FXML
     private void handleLogin()
     {
-        if (!"".equals(txtUser.getText()) && !"".equals(txtPass.getText()))
+        try
         {
-            checkLoginInformation();
-        } else
+            checkLoginInformation(txtUser.getText(), txtPass.getText());
+        }
+        catch (IOException ex)
         {
-            System.out.println("Udfyld venligst brugernavn og kodeord");
+            showErrorDialog("I/O Error", "", "We couldn't get access to the "
+                    + "requested data!");
         }
     }
 
@@ -118,50 +117,42 @@ public class LoginViewController extends Dragable implements Initializable
         startDrag(event);
     }
 
-    private void checkLoginInformation()
+    private void checkLoginInformation(String userName, String password) throws IOException
     {
-        String usernameInput = txtUser.getText();
-        String passwordInput = txtPass.getText();
-        try
-        {
-            checkUserInput(usernameInput, passwordInput);
-        } catch (IOException ex)
-        {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("I/O Error");
-            alert.setHeaderText("");
-            alert.setContentText("The user information you typed can not be found"
-                    + " in our database.");
-
-            alert.showAndWait();
-        }
-    }
-
-    private void checkUserInput(String userName, String password) throws IOException
-    {
+        String userType = "";
         for (Person person : people)
         {
-            if (userName.equals(person.getUserName()) && password.equals(person.getPassword()))
+            if (userName.matches(person.getUserName()) && password.matches(person.getPassword()))
             {
                 if (person instanceof Teacher)
                 {
+                    userType = "Teacher";
                     teacherModel.setCurrentUser((Teacher) person);
-                    if (checkBoxRemember.isSelected())
-                    {
-                        loginModel.saveLoginData(person);
-                    }
-                    loadStage("/attendence/gui/view/TeacherView.fxml", "Teacher");
-                } else if (person instanceof Student)
-                {
-                    studentModel.setCurrentUser((Student) person);
-                    if (checkBoxRemember.isSelected())
-                    {
-                        loginModel.saveLoginData(person);
-                    }
-                    loadStage("/attendence/gui/view/StudentView.fxml", "Student");
                 }
+
+                else if (person instanceof Student)
+                {
+                    userType = "Student";
+                    studentModel.setCurrentUser((Student) person);
+                }
+
+                loadStage("/attendence/gui/view/" + userType + "View.fxml", userType);
+                return;
             }
         }
+
+        showErrorDialog("Login Error", "User not found", "Either the username or the password you provided"
+                + " could not be found in our database.");
+    }
+
+    private void showErrorDialog(String title, String header, String content)
+    {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+
+        alert.showAndWait();
     }
 
     private void loadStage(String viewPath, String title) throws IOException
