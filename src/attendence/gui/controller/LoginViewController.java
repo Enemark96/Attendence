@@ -136,6 +136,7 @@ public class LoginViewController extends Dragable implements Initializable
                     return;
                 }
                 
+                if (checkBoxRemember.isSelected())
                 {
                     loginModel.saveLoginData(person);
                 }
