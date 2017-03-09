@@ -89,9 +89,19 @@ public class StudentViewController extends Dragable implements Initializable {
         comboMonth.setItems(dateTimeModel.getFormattedMonths());
 
         updateChart();
-        if (model.getCurrentUser().getLastCheckIn().compareTo(model.getCurrentUser().getLastCheckOut()) > 0)
+        if (model.getCurrentUser().getLastCheckIn() != null)
         {
-            checkInStyle(false);
+            if (model.getCurrentUser().getLastCheckOut() != null)
+            {
+                if (model.getCurrentUser().getLastCheckIn().compareTo(model.getCurrentUser().getLastCheckOut()) > 0)
+                {
+                    checkInStyle(false);
+                }
+            }
+            else
+            {
+                checkInStyle(false);
+            }
         }
     }
 
