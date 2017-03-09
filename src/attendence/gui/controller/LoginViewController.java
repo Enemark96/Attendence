@@ -119,23 +119,29 @@ public class LoginViewController extends Dragable implements Initializable
 
     private void checkLoginInformation(String userName, String password) throws IOException
     {
-        String userType = "";
         for (Person person : people)
         {
             if (userName.matches(person.getUserName()) && password.matches(person.getPassword()))
             {
                 if (person instanceof Teacher)
                 {
-                    userType = "Teacher";
                     teacherModel.setCurrentUser((Teacher) person);
                 }
-
                 else if (person instanceof Student)
                 {
-                    userType = "Student";
                     studentModel.setCurrentUser((Student) person);
                 }
+                else
+                {
+                    return;
+                }
+                
+                if (checkBoxRemember.isSelected())
+                {
+                    loginModel.saveLoginData(person);
+                }
 
+                String userType = person.getClass().getSimpleName();
                 loadStage("/attendence/gui/view/" + userType + "View.fxml", userType);
                 return;
             }
