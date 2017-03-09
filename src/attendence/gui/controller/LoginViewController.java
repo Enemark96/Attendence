@@ -40,7 +40,7 @@ import javafx.stage.StageStyle;
 public class LoginViewController extends Dragable implements Initializable
 {
 
-    private Person loadedPerson;
+    Person loadedPerson;
     private final PersonManager manager;
     private final StudentModel studentModel;
     private final TeacherModel teacherModel;
@@ -69,7 +69,7 @@ public class LoginViewController extends Dragable implements Initializable
         students = manager.getAllStudents();
         teachers = manager.getAllTeachers();
         people = manager.getAllPeople();
-//        loadedPerson =  loginModel.loadLoginData();
+        loadedPerson = loginModel.loadLoginData();
 
     }
 
@@ -79,22 +79,77 @@ public class LoginViewController extends Dragable implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-//             txtUser.setText(loadedPerson.getUserName());
-//            txtPass.setText(loadedPerson.getPassword());
+   
+        loadUserLogin();
+        setCheckBoxRemember();
+          
+    }
 
+    private void setCheckBoxRemember()
+    {
+        if (txtUser.getText().isEmpty() )
+        {
+            checkBoxRemember.setSelected(false);
+        } else 
+        {
+            checkBoxRemember.setSelected(true);
+        } 
+    }
+
+    private void loadUserLogin()
+    {
+        try
+        {
+            makeNewFileWhenNull();
+        } catch (IOException ex)
+        {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setAlertType(AlertType.ERROR);
+        }
+        if (loadedPerson != null)
+        {
+
+            txtUser.setText(loadedPerson.getUserName());
+            txtPass.setText(loadedPerson.getPassword());
+
+            if (!checkBoxRemember.isPressed())
+            {
+                try
+                {
+                    Teacher teacher = new Teacher(0, "", "", "", "", "", "");
+                    loginModel.saveLoginData(teacher);
+                    loadedPerson = teacher;
+
+                } catch (IOException ex)
+                {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setAlertType(AlertType.ERROR);
+                }
+            }
+        }
+    }
+
+    private void makeNewFileWhenNull() throws IOException
+    {
+        try
+        {
+            loginModel.loadLoginData();
+        } catch (FileNotFoundException ex)
+        {
+            loginModel.saveLoginData(loadedPerson);
+
+        }
     }
 
     @FXML
     private void handleLogin()
     {
-        try
+        if (!"".equals(txtUser.getText()) && !"".equals(txtPass.getText()))
         {
-            checkLoginInformation(txtUser.getText(), txtPass.getText());
-        }
-        catch (IOException ex)
+            checkLoginInformation();
+        } else
         {
-            showErrorDialog("I/O Error", "", "We couldn't get access to the "
-                    + "requested data!");
+            System.out.println("Udfyld venligst brugernavn og kodeord");
         }
     }
 
@@ -117,48 +172,52 @@ public class LoginViewController extends Dragable implements Initializable
         startDrag(event);
     }
 
-    private void checkLoginInformation(String userName, String password) throws IOException
+    private void checkLoginInformation()
+    {
+        String usernameInput = txtUser.getText();
+        String passwordInput = txtPass.getText();
+        try
+        {
+            checkUserInput(usernameInput, passwordInput);
+        } catch (IOException ex)
+        {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("I/O Error");
+            alert.setHeaderText("");
+            alert.setContentText("The user information you typed can not be found"
+                    + " in our database.");
+
+            alert.showAndWait();
+        }
+    }
+
+    private void checkUserInput(String userName, String password) throws IOException
     {
         for (Person person : people)
         {
-            if (userName.matches(person.getUserName()) && password.matches(person.getPassword()))
+            if (userName.equals(person.getUserName()) && password.equals(person.getPassword()))
             {
                 if (person instanceof Teacher)
                 {
                     teacherModel.setCurrentUser((Teacher) person);
-                }
-                else if (person instanceof Student)
+                    saveLogin(person);
+                    loadStage("/attendence/gui/view/TeacherView.fxml", "Teacher");
+                } else if (person instanceof Student)
                 {
                     studentModel.setCurrentUser((Student) person);
+                    saveLogin(person);
+                    loadStage("/attendence/gui/view/StudentView.fxml", "Student");
                 }
-                else
-                {
-                    return;
-                }
-                
-                if (checkBoxRemember.isSelected())
-                {
-                    loginModel.saveLoginData(person);
-                }
-
-                String userType = person.getClass().getSimpleName();
-                loadStage("/attendence/gui/view/" + userType + "View.fxml", userType);
-                return;
             }
         }
-
-        showErrorDialog("Login Error", "User not found", "Either the username or the password you provided"
-                + " could not be found in our database.");
     }
 
-    private void showErrorDialog(String title, String header, String content)
+    private void saveLogin(Person person) throws IOException
     {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-
-        alert.showAndWait();
+        if (checkBoxRemember.isSelected())
+        {
+            loginModel.saveLoginData(person);
+        }
     }
 
     private void loadStage(String viewPath, String title) throws IOException
