@@ -37,8 +37,7 @@ import javafx.stage.Stage;
  *
  * @author Jacob Enemark
  */
-public class StudentViewController extends Dragable implements Initializable
-{
+public class StudentViewController extends Dragable implements Initializable {
 
     private final ObservableList data;
     private final StudentModel model;
@@ -90,26 +89,53 @@ public class StudentViewController extends Dragable implements Initializable
         comboMonth.setItems(dateTimeModel.getFormattedMonths());
 
         updateChart();
+        if (model.getCurrentUser().getLastCheckIn().compareTo(model.getCurrentUser().getLastCheckOut()) > 0)
+        {
+            checkInStyle(false);
+        }
     }
 
     @FXML
     private void handleCheckIn() throws SQLException
     {
-        if (checkedIn())
+        checkInStyle(checkedIn());
+        checkInDataHandle(checkedIn());
+    }
+
+    private void checkInDataHandle(boolean checkedIn) throws SQLException
+    {
+        if (checkedIn)
         {
-            btnCheckIn.setText("Check-in");
-            btnCheckIn.setStyle("-fx-background-color : LIGHTGREEN;");
-            lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
-            model.getCurrentUser().setLastCheckOut(Timestamp.valueOf(LocalDateTime.now()));
-            manager.updateCheckOut(model.getCurrentUser());
-        } else
-        {
-            btnCheckIn.setText("Check-out");
-            btnCheckIn.setStyle("-fx-background-color : #FF0033;");
-            lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName() + ", you are now cheked-in");
             model.getCurrentUser().setLastCheckIn(Timestamp.valueOf(LocalDateTime.now()));
             manager.updateCheckIn(model.getCurrentUser());
         }
+        else
+        {
+            model.getCurrentUser().setLastCheckOut(Timestamp.valueOf(LocalDateTime.now()));
+            manager.updateCheckOut(model.getCurrentUser());
+        }
+    }
+
+    private void checkInStyle(boolean checkedIn)
+    {
+        String btnText;
+        String btnStyle;
+        String loginText = "";
+
+        if (checkedIn)
+        {
+            btnText = "Check-in";
+            btnStyle = "-fx-background-color : LIGHTGREEN;";
+        }
+        else
+        {
+            btnText = "Check-out";
+            btnStyle = "-fx-background-color : #FF0033;";
+            loginText = ", you are now cheked-in";
+        }
+        btnCheckIn.setText(btnText);
+        btnCheckIn.setStyle(btnStyle);
+        lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName() + loginText);
     }
 
     @FXML
@@ -154,8 +180,7 @@ public class StudentViewController extends Dragable implements Initializable
         for (final PieChart.Data data : absenceChart.getData())
         {
             data.getNode().addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET,
-                    new EventHandler<MouseEvent>()
-            {
+                    new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e)
                 {
