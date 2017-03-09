@@ -20,16 +20,20 @@ public class Student extends Person {
      * @param id The id of the student.
      * @param firstName The student's first name.
      * @param lastName The student's last name.
+     * @param email
      * @param username The student's user name.
      * @param password The password matching the student's user name.
+     * @param phoneNum
      * @param className The student's class name, that is the name of the class
-     * @param lastLogin in which the student participates. e.g. A
+     * @param lastCheckIn in which the student participates. e.g. A
+     * @param lastCheckout
      */
-    public Student(int id, String firstName, String lastName, String email, String username, String password, String phoneNum, String className, Timestamp lastLogin, Timestamp lastCheckout)
+    public Student(int id, String firstName, String lastName, String email, String username, String password, String phoneNum, String className, Timestamp lastCheckIn, Timestamp lastCheckout)
     {
         super(id, firstName, lastName, email, username, password, phoneNum);
         this.className = className;
-        this.lastCheckIn = lastLogin;
+        this.lastCheckIn = lastCheckIn;
+        this.lastCheckOut = lastCheckout;
     }
 
     /**
