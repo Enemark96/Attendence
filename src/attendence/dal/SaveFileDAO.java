@@ -31,6 +31,16 @@ public class SaveFileDAO
             oos.writeObject(person);
         }
     }
+      
+//      public void writeObjectData(Person person, String fileName) throws IOException
+//    {        
+//        try (FileOutputStream fos = new FileOutputStream(fileName))
+//        {
+//            BufferedOutputStream bos = new BufferedOutputStream(fos);
+//            ObjectOutputStream oos = new ObjectOutputStream(bos);
+//            oos.writeObject(person);
+//        }
+//    }
 
     /**
      * Reads an object from a file, the object must be an arraylist of playlists.
@@ -38,21 +48,39 @@ public class SaveFileDAO
      * @return Returns a new array containing all the stored data.
      * @throws FileNotFoundException 
      */
+//    public Person readObjectData(String fileName) throws FileNotFoundException
+//    {
+//        Person person = null;
+//
+//        FileInputStream fis = new FileInputStream(fileName);
+//        BufferedInputStream bis = new BufferedInputStream(fis);
+//        try (ObjectInputStream ois = new ObjectInputStream(bis))
+//        {
+//            
+//              person =  (Person) ois.readObject();
+//        }
+//        catch (IOException | ClassNotFoundException ex)
+//        {
+//            System.out.println("No file");
+//        }
+//        return person;
+//    }
+    
     public Person readObjectData(String fileName) throws FileNotFoundException
     {
         Person person = null;
 
-        FileInputStream fis = new FileInputStream(fileName);
-        BufferedInputStream bis = new BufferedInputStream(fis);
-        try (ObjectInputStream ois = new ObjectInputStream(bis))
+        try (FileInputStream fis = new FileInputStream(fileName))
         {
-            
-              person =  (Person) ois.readObject();
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            ObjectInputStream ois = new ObjectInputStream(bis);
+            person = (Person) ois.readObject();
         }
         catch (IOException | ClassNotFoundException ex)
         {
-            // Handle exception
+            System.out.println("Ingen fil");
         }
+
         return person;
     }
 }
