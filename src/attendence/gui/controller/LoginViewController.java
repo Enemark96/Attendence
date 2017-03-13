@@ -13,9 +13,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,7 +25,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -69,7 +65,7 @@ public class LoginViewController extends Dragable implements Initializable
         students = manager.getAllStudents();
         teachers = manager.getAllTeachers();
         people = manager.getAllPeople();
-//        loadedPerson =  loginModel.loadLoginData();
+        loadedPerson = loginModel.loadLoginData();
 
     }
 
@@ -79,9 +75,10 @@ public class LoginViewController extends Dragable implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-//             txtUser.setText(loadedPerson.getUserName());
-//            txtPass.setText(loadedPerson.getPassword());
-
+   
+        loadUserLogin();
+        setCheckBoxRemember();
+          
     }
 
     @FXML
@@ -117,6 +114,15 @@ public class LoginViewController extends Dragable implements Initializable
         startDrag(event);
     }
 
+    /**
+     * Compares the parameters provided with data from our database. If the data
+     * exists the user is forwarded to a new view. The new view that is
+     * displayed is dependent on the user type. (Teacher or Student)
+     *
+     * @param userName The user name to login with.
+     * @param password The password to match the user name login.
+     * @throws IOException
+     */
     private void checkLoginInformation(String userName, String password) throws IOException
     {
         for (Person person : people)
@@ -135,14 +141,16 @@ public class LoginViewController extends Dragable implements Initializable
                 {
                     return;
                 }
-                
+
                 if (checkBoxRemember.isSelected())
                 {
                     loginModel.saveLoginData(person);
                 }
 
+                // A variable to hold the name of the view.
                 String userType = person.getClass().getSimpleName();
-                loadStage("/attendence/gui/view/" + userType + "View.fxml", userType);
+
+                loadStage("/attendence/gui/view/" + userType + "View.fxml");
                 return;
             }
         }
@@ -151,6 +159,34 @@ public class LoginViewController extends Dragable implements Initializable
                 + " could not be found in our database.");
     }
 
+//    private void checkUserInput(String userName, String password) throws IOException
+//    {
+//        for (Person person : people)
+//        {
+//            if (userName.equals(person.getUserName()) && password.equals(person.getPassword()))
+//            {
+//                if (person instanceof Teacher)
+//                {
+//                    teacherModel.setCurrentUser((Teacher) person);
+//                    saveLogin(person);
+//                    loadStage("/attendence/gui/view/TeacherView.fxml", "Teacher");
+//                } else if (person instanceof Student)
+//                {
+//                    studentModel.setCurrentUser((Student) person);
+//                    saveLogin(person);
+//                    loadStage("/attendence/gui/view/StudentView.fxml", "Student");
+//                }
+//            }
+//        }
+//    }
+    
+    /**
+     * Shows an error dialog.
+     *
+     * @param title The title of the error.
+     * @param header The header - subtitle.
+     * @param content The error message.
+     */
     private void showErrorDialog(String title, String header, String content)
     {
         Alert alert = new Alert(AlertType.ERROR);
@@ -161,7 +197,15 @@ public class LoginViewController extends Dragable implements Initializable
         alert.showAndWait();
     }
 
-    private void loadStage(String viewPath, String title) throws IOException
+//    private void saveLogin(Person person) throws IOException
+//    {
+//        if (checkBoxRemember.isSelected())
+//        {
+//            loginModel.saveLoginData(person);
+//        }
+//    }
+
+    private void loadStage(String viewPath) throws IOException
     {
         Stage primaryStage = (Stage) txtUser.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(viewPath));
@@ -171,11 +215,70 @@ public class LoginViewController extends Dragable implements Initializable
         Stage newStage = new Stage(StageStyle.UNDECORATED);
         newStage.setScene(new Scene(root));
 
-        newStage.initModality(Modality.WINDOW_MODAL);
+//        newStage.initModality(Modality.WINDOW_MODAL);
         newStage.initOwner(primaryStage);
-        newStage.setTitle(title);
+//        newStage.setTitle(title);
 
         newStage.show();
     }
 
+    private void setCheckBoxRemember()
+    {
+        if (txtUser.getText().isEmpty())
+        {
+            checkBoxRemember.setSelected(false);
+        }
+        else
+        {
+            checkBoxRemember.setSelected(true);
+        }
+    }
+
+    private void loadUserLogin()
+    {
+        try
+        {
+            makeNewFileWhenNull();
+        }
+        catch (IOException ex)
+        {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setAlertType(AlertType.ERROR);
+        }
+        if (loadedPerson != null)
+        {
+
+            txtUser.setText(loadedPerson.getUserName());
+            txtPass.setText(loadedPerson.getPassword());
+
+            if (!checkBoxRemember.isPressed())
+            {
+                try
+                {
+                    Teacher teacher = new Teacher(0, "", "", "", "", "", "");
+                    loginModel.saveLoginData(teacher);
+                    loadedPerson = teacher;
+
+                }
+                catch (IOException ex)
+                {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setAlertType(AlertType.ERROR);
+                }
+            }
+        }
+    }
+
+    private void makeNewFileWhenNull() throws IOException
+    {
+        try
+        {
+            loginModel.loadLoginData();
+        }
+        catch (FileNotFoundException ex)
+        {
+            loginModel.saveLoginData(loadedPerson);
+
+        }
+    }
 }
