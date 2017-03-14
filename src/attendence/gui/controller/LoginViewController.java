@@ -23,6 +23,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -55,6 +57,8 @@ public class LoginViewController extends Dragable implements Initializable
     private BorderPane bp;
     @FXML
     private CheckBox checkBoxRemember;
+    @FXML
+    private ImageView imageLogo;
 
     public LoginViewController() throws SQLException, IOException
     {
@@ -78,6 +82,7 @@ public class LoginViewController extends Dragable implements Initializable
    
         loadUserLogin();
         setCheckBoxRemember();
+        setLogo();
           
     }
 
@@ -280,5 +285,13 @@ public class LoginViewController extends Dragable implements Initializable
             loginModel.saveLoginData(loadedPerson);
 
         }
+    }
+    
+    private void setLogo()
+    {
+        Image imageEasv = new Image("attendence/gui/view/images/easv.png");
+        imageLogo.setImage(imageEasv);
+        imageLogo.setFitHeight(80);
+        imageLogo.setFitWidth(150);
     }
 }
