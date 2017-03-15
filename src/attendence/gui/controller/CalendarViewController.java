@@ -28,23 +28,27 @@ import javafx.scene.layout.GridPane;
 public class CalendarViewController implements Initializable
 {
 
-    Calendar cal;
-    int year;
-    int month;
-    ObservableList<String> months;
-
+    private Calendar cal;
+    private int year;
+    private int month;
+//    private int day;
+    private final String todayStyle;
+    private ObservableList<String> months;
+    private ObservableList<Integer> years;
     @FXML
     private GridPane gridCalendar;
     @FXML
-    private TextField txtYear;
-    @FXML
     private ComboBox<String> cmbMonth;
+    @FXML
+    private ComboBox<Integer> cmbYear;
 
     public CalendarViewController()
     {
+        this.todayStyle = "-fx-border-color: red;";
         this.cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+1"));
         year = cal.get(Calendar.YEAR);
         month = cal.get(Calendar.MONTH);
+//        day = cal.get(Calendar.DATE);
         months = FXCollections.observableArrayList(
                 "January",
                 "Febuary",
@@ -59,6 +63,13 @@ public class CalendarViewController implements Initializable
                 "November",
                 "December"
         );
+        years = FXCollections.observableArrayList(
+                year,
+                year - 2,
+                year - 3,
+                year - 4,
+                year - 5
+        );
     }
 
     /**
@@ -70,7 +81,8 @@ public class CalendarViewController implements Initializable
         fillCalendar();
         cmbMonth.setItems(months);
         cmbMonth.getSelectionModel().select(Calendar.MONTH);
-        txtYear.setText(year + "");
+        cmbYear.setItems(years);
+        cmbYear.getSelectionModel().select(0);
     }
 
     private void fillCalendar()
@@ -116,6 +128,11 @@ public class CalendarViewController implements Initializable
             {
                 Button btn = new Button(i + "");
                 btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                Calendar tempCal = Calendar.getInstance();
+                if (i == tempCal.get(Calendar.DATE) && month == tempCal.get(Calendar.MONTH) && year == tempCal.get(Calendar.YEAR))
+                {
+                    btn.setStyle(todayStyle);
+                }
                 gridCalendar.add(btn, gridX, gridY);
             }
 
@@ -135,27 +152,30 @@ public class CalendarViewController implements Initializable
     @FXML
     private void changeYear(ActionEvent event)
     {
-        String input = txtYear.getText();
-        int yearInput = year; // defaults the variable
-        try
-        {
-            yearInput = Integer.parseInt(input); // checks if only numbers are present
+        year = cmbYear.getValue();
+        fillCalendar();
 
-        }
-        catch (NumberFormatException e)
-        {
-            System.out.println("Not a valid number"); // if other than numbers are present
-        }
-        int length = String.valueOf(yearInput).length(); // Get length of input
-        if (length == 4)
-        {
-            year = yearInput;
-            fillCalendar();
-        }
-        else
-        {
-            System.out.println("Year has to be 4 digits");
-        }
+//        String input = txtYear.getText();
+//        int yearInput = year; // defaults the variable
+//        try
+//        {
+//            yearInput = Integer.parseInt(input); // checks if only numbers are present
+//
+//        }
+//        catch (NumberFormatException e)
+//        {
+//            System.out.println("Not a valid number"); // if other than numbers are present
+//        }
+//        int length = String.valueOf(yearInput).length(); // Get length of input
+//        if (length == 4)
+//        {
+//            year = yearInput;
+//            fillCalendar();
+//        }
+//        else
+//        {
+//            System.out.println("Year has to be 4 digits");
+//        }
     }
 
     @FXML
