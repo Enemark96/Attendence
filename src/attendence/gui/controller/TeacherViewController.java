@@ -5,7 +5,6 @@
  */
 package attendence.gui.controller;
 
-import attendence.be.Absence;
 import attendence.be.Student;
 import attendence.bll.PersonManager;
 import attendence.gui.model.DateTimeModel;
@@ -13,8 +12,6 @@ import attendence.gui.model.TeacherModel;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
@@ -27,13 +24,16 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * The controller for the teacher view.
@@ -57,7 +57,7 @@ public class TeacherViewController extends Dragable implements Initializable
     @FXML
     private TableColumn<Student, String> colStudent;
     @FXML
-    private TableColumn<Student, String> colAbsence;
+    private TableColumn<Student, Boolean> colAbsence;
     @FXML
     private Button closeButton;
     @FXML
@@ -98,8 +98,9 @@ public class TeacherViewController extends Dragable implements Initializable
         lblUsername.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         tblStudentAbs.setItems(allStudents);
         colStudent.setCellValueFactory(new PropertyValueFactory<>("fullName"));
-        
-        colAbsence.setCellValueFactory(new PropertyValueFactory<>("amountOfAbsence"));
+
+        addCheckBoxes();
+
         fillComboBoxes();
         updateDateInfo();
         search();
@@ -143,11 +144,11 @@ public class TeacherViewController extends Dragable implements Initializable
 
     private void search()
     {
-              txtSearch.textProperty().addListener((ObservableValue<? extends String> listener, String oldQuery, String newQuery)
+        txtSearch.textProperty().addListener((ObservableValue<? extends String> listener, String oldQuery, String newQuery)
                 -> 
                 {
-                   searchedStudents.setAll(model.search(studentList, newQuery));
-                   tblStudentAbs.setItems(searchedStudents);
+                    searchedStudents.setAll(model.search(studentList, newQuery));
+                    tblStudentAbs.setItems(searchedStudents);
         });
     }
 
@@ -163,5 +164,21 @@ public class TeacherViewController extends Dragable implements Initializable
     private void drag(MouseEvent event)
     {
         dragging(event, txtSearch);
+    }
+
+    private void addCheckBoxes()
+    {
+        colAbsence.setCellValueFactory(
+                new Callback<CellDataFeatures<Student, Boolean>, ObservableValue<Boolean>>()
+        {
+
+            @Override
+            public ObservableValue<Boolean> call(CellDataFeatures<Student, Boolean> param)
+            {
+                return param.getValue().registeredProperty();
+            }
+        });
+
+        colAbsence.setCellFactory(CheckBoxTableCell.forTableColumn(colAbsence));
     }
 }
