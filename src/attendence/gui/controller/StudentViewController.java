@@ -5,7 +5,6 @@
  */
 package attendence.gui.controller;
 
-import attendence.be.Absence;
 import attendence.bll.PersonManager;
 import attendence.gui.model.DateTimeModel;
 import attendence.gui.model.StudentModel;
@@ -14,7 +13,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

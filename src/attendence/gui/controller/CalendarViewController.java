@@ -147,8 +147,9 @@ public class CalendarViewController implements Initializable
                 }
                 if (month < tempCal.get(Calendar.MONTH) || i < tempCal.get(Calendar.DATE) && month == tempCal.get(Calendar.MONTH) || year < tempCal.get(Calendar.YEAR))
                 {
-
-                    if (cal.getTime().after(firstSemester))
+                    Calendar tempCalWithDay = cal;
+                    tempCalWithDay.set(Calendar.DATE, i);
+                    if (tempCalWithDay.getTime().after(firstSemester))
                     {
                         checkIfAbsent(i, btn);
                     }

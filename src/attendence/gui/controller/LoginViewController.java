@@ -79,11 +79,11 @@ public class LoginViewController extends Dragable implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-   
+
         loadUserLogin();
         setCheckBoxRemember();
         setLogo();
-          
+
     }
 
     @FXML
@@ -185,7 +185,6 @@ public class LoginViewController extends Dragable implements Initializable
 //            }
 //        }
 //    }
-    
     /**
      * Shows an error dialog.
      *
@@ -210,7 +209,6 @@ public class LoginViewController extends Dragable implements Initializable
 //            loginModel.saveLoginData(person);
 //        }
 //    }
-
     private void loadStage(String viewPath) throws IOException
     {
         Stage primaryStage = (Stage) txtUser.getScene().getWindow();
@@ -287,7 +285,7 @@ public class LoginViewController extends Dragable implements Initializable
 
         }
     }
-    
+
     private void setLogo()
     {
         Image imageEasv = new Image("attendence/gui/view/images/easv.png");

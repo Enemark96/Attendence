@@ -32,7 +32,7 @@ public class Semester
         int year = 0;
         try
         {
-             year = Integer.parseInt(yearString);
+            year = Integer.parseInt(yearString);
         }
         catch (NumberFormatException e)
         {
@@ -41,24 +41,24 @@ public class Semester
         switch (semesterNum)
         {
             case 1:
-                startDate = new Date("8/1/"+year);
-                endDate = new Date("12/31/"+year);
+                startDate = new Date("8/22/" + year);
+                endDate = new Date("12/31/" + year);
                 break;
             case 2:
-                startDate = new Date("1/1/"+year+1);
-                endDate = new Date("7/31/"+year+1);
+                startDate = new Date("1/2/" + year + 1);
+                endDate = new Date("7/31/" + year + 1);
                 break;
             case 3:
-                startDate = new Date("8/1/"+year+1);
-                endDate = new Date("12/31/"+year+1);
+                startDate = new Date("8/22/" + year + 1);
+                endDate = new Date("12/31/" + year + 1);
                 break;
             case 4:
-                startDate = new Date("1/1/"+year+2);
-                endDate = new Date("7/31/"+year+2);
+                startDate = new Date("1/2/" + year + 2);
+                endDate = new Date("7/31/" + year + 2);
                 break;
             case 5:
-                startDate = new Date("8/1/"+year+2);
-                endDate = new Date("12/31/"+year+2);
+                startDate = new Date("8/22/" + year + 2);
+                endDate = new Date("12/31/" + year + 2);
                 break;
             default:
                 break;
@@ -80,5 +80,4 @@ public class Semester
         return endDate;
     }
 
-    
 }
