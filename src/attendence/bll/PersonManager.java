@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * A class that holds data about the people.
+ *
  * @author Simon Birkedal, Stephan Fuhlendorff, Thomas Hansen & Jacob Enemark
  */
 public class PersonManager
@@ -27,7 +28,8 @@ public class PersonManager
 
     /**
      * Gets all the students.
-     * @return 
+     *
+     * @return
      */
     public List<Student> getAllStudents()
     {
@@ -36,7 +38,8 @@ public class PersonManager
 
     /**
      * Gets all the teachers.
-     * @return 
+     *
+     * @return
      */
     public List<Teacher> getAllTeachers()
     {
@@ -45,8 +48,9 @@ public class PersonManager
 
     /**
      * Gets the absence for each person.
+     *
      * @param sID
-     * @return 
+     * @return
      */
     public List<Absence> getAllAbsence(int sID) throws SQLException
     {
@@ -55,7 +59,8 @@ public class PersonManager
 
     /**
      * Gets all the people (Teachers and students)
-     * @return 
+     *
+     * @return
      */
     public List<Person> getAllPeople()
     {
