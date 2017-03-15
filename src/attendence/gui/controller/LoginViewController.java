@@ -87,7 +87,7 @@ public class LoginViewController extends Dragable implements Initializable
     }
 
     @FXML
-    private void handleLogin()
+    private void handleLogin() throws SQLException
     {
         try
         {
@@ -128,7 +128,7 @@ public class LoginViewController extends Dragable implements Initializable
      * @param password The password to match the user name login.
      * @throws IOException
      */
-    private void checkLoginInformation(String userName, String password) throws IOException
+    private void checkLoginInformation(String userName, String password) throws IOException, SQLException
     {
         for (Person person : people)
         {
