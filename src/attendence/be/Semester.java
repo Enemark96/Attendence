@@ -41,24 +41,24 @@ public class Semester
         switch (semesterNum)
         {
             case 1:
-                startDate = new Date("1/8/"+year);
-                endDate = new Date("31/12/"+year);
+                startDate = new Date("8/1/"+year);
+                endDate = new Date("12/31/"+year);
                 break;
             case 2:
                 startDate = new Date("1/1/"+year+1);
-                endDate = new Date("31/7/"+year+1);
+                endDate = new Date("7/31/"+year+1);
                 break;
             case 3:
-                startDate = new Date("1/8/"+year+1);
-                endDate = new Date("31/12/"+year+1);
+                startDate = new Date("8/1/"+year+1);
+                endDate = new Date("12/31/"+year+1);
                 break;
             case 4:
                 startDate = new Date("1/1/"+year+2);
-                endDate = new Date("31/7/"+year+2);
+                endDate = new Date("7/31/"+year+2);
                 break;
             case 5:
-                startDate = new Date("1/8/"+year+2);
-                endDate = new Date("31/12/"+year+2);
+                startDate = new Date("8/1/"+year+2);
+                endDate = new Date("12/31/"+year+2);
                 break;
             default:
                 break;

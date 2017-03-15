@@ -6,9 +6,11 @@
 package attendence.gui.controller;
 
 import attendence.be.Absence;
+import attendence.be.Semester;
 import attendence.gui.model.StudentModel;
 import java.net.URL;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -99,6 +101,7 @@ public class CalendarViewController implements Initializable
         cal.set(year, month, 1); // Sets the month/year for the calendar to show
         String dayOfWeek = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH); // Gets the shortened name for the day
         int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH); // Gets number of days in the selected month
+        Date firstSemester = new Semester(1, model.getCurrentUser().getClassName()).getStartDate();
         int gridX = 0;
         int gridY = 1;
         switch (dayOfWeek)
@@ -144,7 +147,11 @@ public class CalendarViewController implements Initializable
                 }
                 if (month < tempCal.get(Calendar.MONTH) || i < tempCal.get(Calendar.DATE) && month == tempCal.get(Calendar.MONTH) || year < tempCal.get(Calendar.YEAR))
                 {
-                    checkIfAbsent(i, btn);
+
+                    if (cal.getTime().after(firstSemester))
+                    {
+                        checkIfAbsent(i, btn);
+                    }
                 }
                 gridCalendar.add(btn, gridX, gridY);
             }
