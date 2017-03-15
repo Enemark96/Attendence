@@ -5,6 +5,7 @@
  */
 package attendence.dal;
 
+import attendence.be.Absence;
 import attendence.be.Person;
 import attendence.be.Student;
 import attendence.be.Teacher;
@@ -17,19 +18,22 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  *
  * @author James
  */
-public class DBManager {
+public class DBManager
+{
 
     ConnectionManager cm;
     DateTimeManager DTMan;
 
     List<Student> students = new ArrayList<>();
     List<Teacher> teachers = new ArrayList<>();
+    List<Absence> absences = new ArrayList<>();
 
     public DBManager() throws SQLException, IOException
     {
@@ -120,6 +124,7 @@ public class DBManager {
             ps.executeUpdate();
         }
     }
+
     public void updateCheckOut(Student student) throws SQLException
     {
         String sql = "UPDATE People SET LastCheckedOut = ? WHERE ID = ?";
@@ -131,6 +136,29 @@ public class DBManager {
             ps.setInt(2, student.getId());
             ps.executeUpdate();
         }
+    }
+
+    public List<Absence> getAbsence(int sID) throws SQLException
+    {
+        absences.clear();
+        String sql = "SELECT * FROM Absence WHERE StudentID = " + sID;
+
+        try (Connection con = cm.getConnection())
+        {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next())
+            {
+                int id = rs.getInt(1);
+                int studentID = rs.getInt(2);
+                int lectureID = rs.getInt(3);
+                Date date = rs.getDate(4);
+                Absence absence = new Absence(id, studentID, lectureID, date);
+                absences.add(absence);
+                System.out.println(id+" "+studentID+" "+lectureID+" "+date);
+            }
+        }
+        return absences;
     }
 
 }

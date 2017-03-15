@@ -47,7 +47,6 @@ public class TeacherViewController extends Dragable implements Initializable
     private final PersonManager manager;
     private final DateTimeModel dateTimeModel;
     private final List<Student> studentList;
-    private final List<Absence> absenceList;
     private final ObservableList<Student> allStudents;
     private ObservableList<Student> searchedStudents;
 
@@ -83,7 +82,6 @@ public class TeacherViewController extends Dragable implements Initializable
     {
         this.manager = new PersonManager();
         this.studentList = manager.getAllStudents();
-        this.absenceList = manager.getAllAbsence();
         this.allStudents = FXCollections.observableArrayList();
         searchedStudents = FXCollections.observableArrayList();
         this.model = TeacherModel.getInstance();
@@ -100,18 +98,7 @@ public class TeacherViewController extends Dragable implements Initializable
         lblUsername.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         tblStudentAbs.setItems(allStudents);
         colStudent.setCellValueFactory(new PropertyValueFactory<>("fullName"));
-        for (Student student : studentList)
-        {
-            int x = 0;
-            for (Absence absence : absenceList)
-            {
-                if (student.getId() == absence.getStudentId())
-                {
-                    x++;
-                }
-            }
-            student.setTotalAbsence(x);
-        }
+        
         colAbsence.setCellValueFactory(new PropertyValueFactory<>("amountOfAbsence"));
         fillComboBoxes();
         updateDateInfo();
