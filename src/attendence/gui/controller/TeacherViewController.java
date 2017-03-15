@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -48,6 +49,7 @@ public class TeacherViewController extends Dragable implements Initializable
     private final List<Student> studentList;
     private final List<Absence> absenceList;
     private final ObservableList<Student> allStudents;
+    private ObservableList<Student> searchedStudents;
 
     @FXML
     private Label lblUsername;
@@ -83,6 +85,7 @@ public class TeacherViewController extends Dragable implements Initializable
         this.studentList = manager.getAllStudents();
         this.absenceList = manager.getAllAbsence();
         this.allStudents = FXCollections.observableArrayList();
+        searchedStudents = FXCollections.observableArrayList();
         this.model = TeacherModel.getInstance();
         dateTimeModel = new DateTimeModel();
         allStudents.addAll(studentList);
@@ -96,7 +99,7 @@ public class TeacherViewController extends Dragable implements Initializable
     {
         lblUsername.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         tblStudentAbs.setItems(allStudents);
-        colStudent.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        colStudent.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         for (Student student : studentList)
         {
             int x = 0;
@@ -112,10 +115,9 @@ public class TeacherViewController extends Dragable implements Initializable
         colAbsence.setCellValueFactory(new PropertyValueFactory<>("amountOfAbsence"));
         fillComboBoxes();
         updateDateInfo();
+        search();
         setLogo();
-        
-        
-        
+
     }
 
     @FXML
@@ -125,7 +127,6 @@ public class TeacherViewController extends Dragable implements Initializable
         stage.close();
 
     }
-
 
     @FXML
     private void setOffset(MouseEvent event)
@@ -138,8 +139,6 @@ public class TeacherViewController extends Dragable implements Initializable
         comboClass.getItems().add("CS2016A");
         comboClass.getItems().add("CS2016B");
 
-        
-
         getCurrentDate();
     }
 
@@ -147,15 +146,24 @@ public class TeacherViewController extends Dragable implements Initializable
     {
         dateFirstDate.setValue(LocalDate.now());
         dateSecondDate.setValue(LocalDate.now());
-        
+
     }
 
     private void updateDateInfo()
     {
-        
 
     }
-    
+
+    private void search()
+    {
+              txtSearch.textProperty().addListener((ObservableValue<? extends String> listener, String oldQuery, String newQuery)
+                -> 
+                {
+                   searchedStudents.setAll(model.search(studentList, newQuery));
+                   tblStudentAbs.setItems(searchedStudents);
+        });
+    }
+
     private void setLogo()
     {
         Image imageEasv = new Image("attendence/gui/view/images/easv.png");

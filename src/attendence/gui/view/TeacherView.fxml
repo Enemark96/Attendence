@@ -18,7 +18,7 @@
         <columns>
             <TableColumn fx:id="colPictures" prefWidth="170.66665649414062" text="Pictures" />
           <TableColumn fx:id="colStudent" maxWidth="312.0" minWidth="-1.0" prefWidth="293.3333435058594" text="Student" />
-          <TableColumn fx:id="colAbsence" prefWidth="105.66668701171875" text="Absence" />
+          <TableColumn fx:id="colAbsence" prefWidth="90.0" text="Absence" />
         </columns>
       </TableView>
       <ComboBox fx:id="comboClass" layoutX="15.0" layoutY="87.0" prefHeight="25.0" prefWidth="84.0" promptText="Class" styleClass="dropdownblue" AnchorPane.leftAnchor="15.0" />
