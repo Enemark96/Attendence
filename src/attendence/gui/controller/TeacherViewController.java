@@ -131,8 +131,8 @@ public class TeacherViewController extends Dragable implements Initializable
 
     private void getCurrentDate()
     {
-        dateFirstDate.setValue(LocalDate.now());
-        dateSecondDate.setValue(LocalDate.now());
+//        dateFirstDate.setValue(LocalDate.now());
+//        dateSecondDate.setValue(LocalDate.now());
 
     }
 
@@ -157,5 +157,11 @@ public class TeacherViewController extends Dragable implements Initializable
         imageLogo.setImage(imageEasv);
         imageLogo.setFitHeight(80);
         imageLogo.setFitWidth(150);
+    }
+
+    @FXML
+    private void drag(MouseEvent event)
+    {
+        dragging(event, txtSearch);
     }
 }
