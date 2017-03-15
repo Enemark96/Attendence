@@ -13,19 +13,25 @@ import attendence.gui.model.TeacherModel;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -43,6 +49,7 @@ public class TeacherViewController extends Dragable implements Initializable
     private final List<Student> studentList;
     private final List<Absence> absenceList;
     private final ObservableList<Student> allStudents;
+    private ObservableList<Student> searchedStudents;
 
     @FXML
     private Label lblUsername;
@@ -57,9 +64,17 @@ public class TeacherViewController extends Dragable implements Initializable
     @FXML
     private ComboBox<String> comboClass;
     @FXML
-    private ComboBox<String> comboMonth;
+    private ComboBox<String> comboSemester;
     @FXML
-    private ComboBox<String> comboDate;
+    private TableColumn<Student, Image> colPictures;
+    @FXML
+    private TextField txtSearch;
+    @FXML
+    private ImageView imageLogo;
+    @FXML
+    private DatePicker dateFirstDate;
+    @FXML
+    private DatePicker dateSecondDate;
 
     /**
      * The default constructor for the TeacherViewController.
@@ -70,6 +85,7 @@ public class TeacherViewController extends Dragable implements Initializable
         this.studentList = manager.getAllStudents();
         this.absenceList = manager.getAllAbsence();
         this.allStudents = FXCollections.observableArrayList();
+        searchedStudents = FXCollections.observableArrayList();
         this.model = TeacherModel.getInstance();
         dateTimeModel = new DateTimeModel();
         allStudents.addAll(studentList);
@@ -81,10 +97,9 @@ public class TeacherViewController extends Dragable implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        // TODO
         lblUsername.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         tblStudentAbs.setItems(allStudents);
-        colStudent.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        colStudent.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         for (Student student : studentList)
         {
             int x = 0;
@@ -100,6 +115,9 @@ public class TeacherViewController extends Dragable implements Initializable
         colAbsence.setCellValueFactory(new PropertyValueFactory<>("amountOfAbsence"));
         fillComboBoxes();
         updateDateInfo();
+        search();
+        setLogo();
+
     }
 
     @FXML
@@ -108,12 +126,6 @@ public class TeacherViewController extends Dragable implements Initializable
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
 
-    }
-
-    @FXML
-    private void drag(MouseEvent event)
-    {
-        dragging(event, comboDate);
     }
 
     @FXML
@@ -127,32 +139,36 @@ public class TeacherViewController extends Dragable implements Initializable
         comboClass.getItems().add("CS2016A");
         comboClass.getItems().add("CS2016B");
 
-        comboMonth.setItems(dateTimeModel.getFormattedMonths());
-
         getCurrentDate();
     }
 
     private void getCurrentDate()
     {
-        comboMonth.setValue(dateTimeModel.getCurrentMonth());
-        comboDate.setValue("" + dateTimeModel.getCurrentDayOfMonth());
+        dateFirstDate.setValue(LocalDate.now());
+        dateSecondDate.setValue(LocalDate.now());
+
     }
 
     private void updateDateInfo()
     {
-        comboMonth.valueProperty().addListener((listener, oldVal, newVal) ->
-        {
-            comboDate.getItems().clear();
-            for (Month month : Month.values())
-            {
-                if (newVal.toLowerCase().equals(month.toString().toLowerCase()))
+
+    }
+
+    private void search()
+    {
+              txtSearch.textProperty().addListener((ObservableValue<? extends String> listener, String oldQuery, String newQuery)
+                -> 
                 {
-                    for (int i = 0; i < month.maxLength(); i++)
-                    {
-                        comboDate.getItems().add("" + (i + 1));
-                    }
-                }
-            }
+                   searchedStudents.setAll(model.search(studentList, newQuery));
+                   tblStudentAbs.setItems(searchedStudents);
         });
+    }
+
+    private void setLogo()
+    {
+        Image imageEasv = new Image("attendence/gui/view/images/easv.png");
+        imageLogo.setImage(imageEasv);
+        imageLogo.setFitHeight(80);
+        imageLogo.setFitWidth(150);
     }
 }

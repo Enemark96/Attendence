@@ -13,6 +13,7 @@ public class Student extends Person {
     private int totalAbsence;
     private Timestamp lastCheckIn;
     private Timestamp lastCheckOut;
+    private String fullName;
 
     /**
      * The default constructor for the student class.
@@ -34,6 +35,7 @@ public class Student extends Person {
         this.className = className;
         this.lastCheckIn = lastCheckIn;
         this.lastCheckOut = lastCheckout;
+        fullName = firstName + " " + lastName;
     }
 
     /**
@@ -95,6 +97,11 @@ public class Student extends Person {
     public void setLastCheckOut(Timestamp lastCheckOut)
     {
         this.lastCheckOut = lastCheckOut;
+    }
+    
+    public String getFullName()
+    {
+        return fullName;
     }
 
    
