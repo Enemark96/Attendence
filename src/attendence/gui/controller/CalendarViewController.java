@@ -5,8 +5,11 @@
  */
 package attendence.gui.controller;
 
+import attendence.be.Absence;
+import attendence.gui.model.StudentModel;
 import java.net.URL;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
@@ -17,7 +20,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -31,10 +33,14 @@ public class CalendarViewController implements Initializable
     private Calendar cal;
     private int year;
     private int month;
-//    private int day;
     private final String todayStyle;
+    
+    private final String absentStyle = "-fx-background-color: red";
+    private final String attendetStyle = "-fx-background-color: green";
+    private final StudentModel model;
     private ObservableList<String> months;
     private ObservableList<Integer> years;
+
     @FXML
     private GridPane gridCalendar;
     @FXML
@@ -44,11 +50,11 @@ public class CalendarViewController implements Initializable
 
     public CalendarViewController()
     {
+        this.model = StudentModel.getInstance();
         this.todayStyle = "-fx-border-color: red;";
         this.cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+1"));
         year = cal.get(Calendar.YEAR);
         month = cal.get(Calendar.MONTH);
-//        day = cal.get(Calendar.DATE);
         months = FXCollections.observableArrayList(
                 "January",
                 "Febuary",
@@ -124,9 +130,11 @@ public class CalendarViewController implements Initializable
         // Loops through the grid placing numbers equal to the amount of days in the month
         for (int i = 1; i < daysInMonth + 1; i++)
         {
+
+                Button btn = new Button(i + "");
+                checkIfAbsent(i, btn);
             if (gridX <= 4)
             {
-                Button btn = new Button(i + "");
                 btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                 Calendar tempCal = Calendar.getInstance();
                 if (i == tempCal.get(Calendar.DATE) && month == tempCal.get(Calendar.MONTH) && year == tempCal.get(Calendar.YEAR))
@@ -149,33 +157,28 @@ public class CalendarViewController implements Initializable
         }
     }
 
+    private void checkIfAbsent(int i, Button btn)
+    {
+        List<Absence> missedClasses = model.getMissedClasses();
+        for (Absence missedClass : missedClasses)
+        {
+            Calendar missCal = Calendar.getInstance();
+            missCal.setTime(missedClass.getDate());
+            if (missCal.get(Calendar.DATE) == i && month == missCal.get(Calendar.MONTH) && year == missCal.get(Calendar.YEAR))
+            {
+                btn.setStyle(absentStyle);
+            }else{
+//                        btn.setStyle(attendetStyle);
+            }
+        }
+    }
+
     @FXML
     private void changeYear(ActionEvent event)
     {
         year = cmbYear.getValue();
         fillCalendar();
 
-//        String input = txtYear.getText();
-//        int yearInput = year; // defaults the variable
-//        try
-//        {
-//            yearInput = Integer.parseInt(input); // checks if only numbers are present
-//
-//        }
-//        catch (NumberFormatException e)
-//        {
-//            System.out.println("Not a valid number"); // if other than numbers are present
-//        }
-//        int length = String.valueOf(yearInput).length(); // Get length of input
-//        if (length == 4)
-//        {
-//            year = yearInput;
-//            fillCalendar();
-//        }
-//        else
-//        {
-//            System.out.println("Year has to be 4 digits");
-//        }
     }
 
     @FXML
