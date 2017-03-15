@@ -34,9 +34,9 @@ public class CalendarViewController implements Initializable
     private int year;
     private int month;
     private final String todayStyle;
-    
-    private final String absentStyle = "-fx-background-color: red";
-    private final String attendetStyle = "-fx-background-color: green";
+
+    private final String absentStyle;
+    private final String attendetStyle;
     private final StudentModel model;
     private ObservableList<String> months;
     private ObservableList<Integer> years;
@@ -50,8 +50,10 @@ public class CalendarViewController implements Initializable
 
     public CalendarViewController()
     {
-        this.model = StudentModel.getInstance();
+        this.attendetStyle = "-fx-background-color: lightgreen";
+        this.absentStyle = "-fx-background-color: #FF0033";
         this.todayStyle = "-fx-border-color: red;";
+        this.model = StudentModel.getInstance();
         this.cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+1"));
         year = cal.get(Calendar.YEAR);
         month = cal.get(Calendar.MONTH);
@@ -71,10 +73,10 @@ public class CalendarViewController implements Initializable
         );
         years = FXCollections.observableArrayList(
                 year,
+                year - 1,
                 year - 2,
                 year - 3,
-                year - 4,
-                year - 5
+                year - 4
         );
     }
 
@@ -131,15 +133,18 @@ public class CalendarViewController implements Initializable
         for (int i = 1; i < daysInMonth + 1; i++)
         {
 
-                Button btn = new Button(i + "");
-                checkIfAbsent(i, btn);
             if (gridX <= 4)
             {
+                Button btn = new Button(i + "");
                 btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                 Calendar tempCal = Calendar.getInstance();
                 if (i == tempCal.get(Calendar.DATE) && month == tempCal.get(Calendar.MONTH) && year == tempCal.get(Calendar.YEAR))
                 {
                     btn.setStyle(todayStyle);
+                }
+                if (month < tempCal.get(Calendar.MONTH) || i < tempCal.get(Calendar.DATE) && month == tempCal.get(Calendar.MONTH) || year < tempCal.get(Calendar.YEAR))
+                {
+                    checkIfAbsent(i, btn);
                 }
                 gridCalendar.add(btn, gridX, gridY);
             }
@@ -167,8 +172,11 @@ public class CalendarViewController implements Initializable
             if (missCal.get(Calendar.DATE) == i && month == missCal.get(Calendar.MONTH) && year == missCal.get(Calendar.YEAR))
             {
                 btn.setStyle(absentStyle);
-            }else{
-//                        btn.setStyle(attendetStyle);
+                return;
+            }
+            else
+            {
+                btn.setStyle(attendetStyle);
             }
         }
     }
