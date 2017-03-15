@@ -155,7 +155,6 @@ public class DBManager
                 Date date = rs.getDate(4);
                 Absence absence = new Absence(id, studentID, lectureID, date);
                 absences.add(absence);
-                System.out.println(id+" "+studentID+" "+lectureID+" "+date);
             }
         }
         return absences;

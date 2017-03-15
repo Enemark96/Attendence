@@ -43,7 +43,7 @@ public class StudentViewController extends Dragable implements Initializable
     private final StudentModel model;
     private final DateTimeModel dateTimeModel;
     private final PersonManager manager;
-    private final List<Absence> absences;
+//    private final List<Absence> absences;
 
     @FXML
     private Label lblUser;
@@ -65,7 +65,7 @@ public class StudentViewController extends Dragable implements Initializable
         this.manager = new PersonManager();
         this.model = StudentModel.getInstance();
         this.data = FXCollections.observableArrayList();
-        this.absences = manager.getAllAbsence(model.getCurrentUser().getId());
+//        this.absences = manager.getAllAbsence(model.getCurrentUser().getId());
         this.dateTimeModel = new DateTimeModel();
 
     }
