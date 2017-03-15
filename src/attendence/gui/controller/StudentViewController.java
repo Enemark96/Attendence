@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -26,9 +26,10 @@ import javafx.geometry.Side;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -37,7 +38,8 @@ import javafx.stage.Stage;
  *
  * @author Jacob Enemark
  */
-public class StudentViewController extends Dragable implements Initializable {
+public class StudentViewController extends Dragable implements Initializable
+{
 
     private final ObservableList data;
     private final StudentModel model;
@@ -48,8 +50,6 @@ public class StudentViewController extends Dragable implements Initializable {
     @FXML
     private Label lblUser;
     @FXML
-    private ListView<String> listMissedClasses;
-    @FXML
     private Button btnCheckIn;
     @FXML
     private PieChart absenceChart;
@@ -59,6 +59,8 @@ public class StudentViewController extends Dragable implements Initializable {
     private ComboBox<String> comboMonth;
     @FXML
     private Label labelProcent;
+    @FXML
+    private HBox calendarContainer;
 
     public StudentViewController() throws SQLException, IOException
     {
@@ -84,7 +86,6 @@ public class StudentViewController extends Dragable implements Initializable {
             }
         }
         lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
-        listMissedClasses.setItems(model.getMissedClassesAsString());
 
         comboMonth.setItems(dateTimeModel.getFormattedMonths());
 
@@ -190,7 +191,8 @@ public class StudentViewController extends Dragable implements Initializable {
         for (final PieChart.Data data : absenceChart.getData())
         {
             data.getNode().addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET,
-                    new EventHandler<MouseEvent>() {
+                    new EventHandler<MouseEvent>()
+            {
                 @Override
                 public void handle(MouseEvent e)
                 {
@@ -205,4 +207,5 @@ public class StudentViewController extends Dragable implements Initializable {
         }
 
     }
+
 }
