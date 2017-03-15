@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -26,7 +25,6 @@ import javafx.geometry.Side;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -65,9 +63,9 @@ public class StudentViewController extends Dragable implements Initializable
     public StudentViewController() throws SQLException, IOException
     {
         this.manager = new PersonManager();
-        this.data = FXCollections.observableArrayList();
-        this.absences = manager.getAllAbsence();
         this.model = StudentModel.getInstance();
+        this.data = FXCollections.observableArrayList();
+        this.absences = manager.getAllAbsence(model.getCurrentUser().getId());
         this.dateTimeModel = new DateTimeModel();
 
     }
@@ -78,13 +76,6 @@ public class StudentViewController extends Dragable implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        for (Absence absence : absences)
-        {
-            if (model.getCurrentUser().getId() == absence.getStudentId())
-            {
-                model.addMissedClass(absence);
-            }
-        }
         lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
 
         comboMonth.setItems(dateTimeModel.getFormattedMonths());
