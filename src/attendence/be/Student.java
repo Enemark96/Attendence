@@ -1,18 +1,22 @@
 package attendence.be;
 
-import java.util.Date;
 import java.sql.Timestamp;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 /**
  *
  * @author Jacob Enemark
  */
-public class Student extends Person {
+public class Student extends Person
+{
 
     private String className;
     private int totalAbsence;
     private Timestamp lastCheckIn;
     private Timestamp lastCheckOut;
+    private String fullName;
+    private BooleanProperty registered;
 
     /**
      * The default constructor for the student class.
@@ -34,6 +38,35 @@ public class Student extends Person {
         this.className = className;
         this.lastCheckIn = lastCheckIn;
         this.lastCheckOut = lastCheckout;
+        fullName = firstName + " " + lastName;
+        setInitRegister(lastCheckIn, lastCheckout);
+    }
+
+    private void setInitRegister(Timestamp lastCheckIn1, Timestamp lastCheckout)
+    {
+        if (lastCheckIn1 != null && lastCheckout != null)
+        {
+            this.registered = new SimpleBooleanProperty(lastCheckIn1.after(lastCheckOut));
+        }
+        else
+        {
+            this.registered = new SimpleBooleanProperty(false);
+        }
+    }
+
+    public BooleanProperty registeredProperty()
+    {
+        return registered;
+    }
+
+    public boolean isRegistered()
+    {
+        return this.registered.get();
+    }
+
+    public void setRegistered(boolean value)
+    {
+        this.registered.set(value);
     }
 
     /**
@@ -97,8 +130,9 @@ public class Student extends Person {
         this.lastCheckOut = lastCheckOut;
     }
 
-   
-
-    
+    public String getFullName()
+    {
+        return fullName;
+    }
 
 }

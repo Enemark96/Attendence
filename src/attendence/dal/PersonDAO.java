@@ -102,41 +102,6 @@ public class PersonDAO {
         return returnList;
     }
 
-    public List<Absence> getAllAbsence()
-    {
-        List<Absence> returnList = new ArrayList<>();
-
-        try (BufferedReader CSVFile = new BufferedReader(
-                new FileReader("Absence.csv")))
-        {
-            CSVFile.readLine(); // Skip first line (header)
-            String line = CSVFile.readLine();
-            while (line != null)
-            {
-                String[] dataArray = line.split(",");
-                try
-                {
-                    returnList.add(new Absence(
-                            Integer.parseInt(dataArray[0]),
-                            new SimpleDateFormat("dd/MM/yyyy").parse(dataArray[1]),
-                            Integer.parseInt(dataArray[2])));
-                }
-                catch (ParseException ex)
-                {
-                    Logger.getLogger(PersonDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                line = CSVFile.readLine();
-            }
-
-        }
-        catch (IOException ex)
-        {
-            System.out.println(ex);
-            return null;
-        }
-        return returnList;
-    }
-
     public List<Person> getAllPeople()
     {
         ArrayList<Person> people = new ArrayList<>();

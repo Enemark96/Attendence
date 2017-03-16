@@ -43,28 +43,19 @@ public class StudentModel
         return missedClasses;
     }
 
-    public ObservableList<String> getMissedClassesAsString()
+    public void setMissedClasses(List<Absence> missedClasses)
     {
-
-        ObservableList<String> returnList = FXCollections.observableArrayList();
+        this.missedClasses.clear();
         for (Absence missedClass : missedClasses)
         {
-            String date = missedClass.getDate() + "";
-            date = date.substring(0, 10);
-            returnList.add(date);
+            this.missedClasses.add(missedClass);
         }
-        return returnList;
     }
 
-    public void setMissedClasses(ObservableList missedClasses)
-    {
-        this.missedClasses = missedClasses;
-    }
-
-    public void addMissedClass(Absence miss)
-    {
-        missedClasses.add(miss);
-    }
+//    public void addMissedClass(Absence miss)
+//    {
+//        missedClasses.add(miss);
+//    }
 
     public Student getCurrentUser()
     {
