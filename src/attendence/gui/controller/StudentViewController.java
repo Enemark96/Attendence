@@ -24,6 +24,8 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -51,12 +53,15 @@ public class StudentViewController extends Dragable implements Initializable
     private PieChart absenceChart;
     @FXML
     private Button closeButton;
-    @FXML
-    private ComboBox<String> comboMonth;
+
+   // @FXML
+ //   private ComboBox<String> comboMonth;
     @FXML
     private Label labelProcent;
     @FXML
     private HBox calendarContainer;
+    @FXML
+    private ImageView imageLogo;
 
     public StudentViewController() throws SQLException, IOException
     {
@@ -65,7 +70,7 @@ public class StudentViewController extends Dragable implements Initializable
         this.data = FXCollections.observableArrayList();
 //        this.absences = manager.getAllAbsence(model.getCurrentUser().getId());
         this.dateTimeModel = new DateTimeModel();
-
+   
     }
 
     /**
@@ -76,7 +81,7 @@ public class StudentViewController extends Dragable implements Initializable
     {
         lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
 
-        comboMonth.setItems(dateTimeModel.getFormattedMonths());
+       // comboMonth.setItems(dateTimeModel.getFormattedMonths());
 
         updateChart();
         if (model.getCurrentUser().getLastCheckIn() != null)
@@ -93,6 +98,7 @@ public class StudentViewController extends Dragable implements Initializable
                 checkInStyle(false);
             }
         }
+             setLogo();
     }
 
     @FXML
@@ -195,6 +201,14 @@ public class StudentViewController extends Dragable implements Initializable
 
         }
 
+    }
+    
+      private void setLogo()
+    {
+        Image imageEasv = new Image("attendence/gui/view/images/easv.png");
+        imageLogo.setImage(imageEasv);
+        imageLogo.setFitHeight(80);
+        imageLogo.setFitWidth(150);
     }
 
 }
