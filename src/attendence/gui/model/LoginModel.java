@@ -11,6 +11,7 @@ import attendence.dal.SaveFileDAO;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -38,19 +39,19 @@ public class LoginModel
     private LoginModel()
     {
         saveFileManager = new SaveFileManager();
-        saveFileDAO = new SaveFileDAO();
+        saveFileDAO = new SaveFileDAO("LoginData.txt");
 
     }
     
-        public Person loadLoginData() throws FileNotFoundException 
+        public String[] loadLoginData() throws IOException 
     {
-       return  saveFileManager.loadLoginData();
+       return saveFileManager.loadLoginData();
 
     }
 
-    public void saveLoginData(Person person) throws IOException
+    public void saveLoginData(String userName, String passWord) throws IOException 
     {
-        saveFileManager.saveLoginData(person);
+        saveFileManager.saveLoginData(userName, passWord);
         
     }
         
