@@ -9,6 +9,9 @@ import attendence.be.Person;
 import attendence.dal.SaveFileDAO;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,21 +25,21 @@ public class SaveFileManager
 
     public SaveFileManager()
     {
-        saveFileDAO = new SaveFileDAO();
+        saveFileDAO = new SaveFileDAO("LoginData.txt");
     }
     
     
-    public void saveLoginData(Person person) throws IOException 
+    public void saveLoginData(String userName, String passWord) throws IOException 
     {
         
-            saveFileDAO.writeObjectData(person, "LogInData.dat");
+            saveFileDAO.saveLogin(userName, passWord);
   
     }
     
-    public Person loadLoginData() throws FileNotFoundException 
+    public String[] loadLoginData() throws IOException 
     {
         
-            return saveFileDAO.readObjectData("LogInData.dat");
+            return saveFileDAO.loadLogin();
  
     }
 
