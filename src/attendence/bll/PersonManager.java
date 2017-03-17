@@ -45,11 +45,12 @@ public class PersonManager
 
     /**
      * Gets the absence for each person.
+     * @param sID
      * @return 
      */
-    public List<Absence> getAllAbsence()
+    public List<Absence> getAllAbsence(int sID) throws SQLException
     {
-        return personDAO.getAllAbsence();
+        return dbManager.getAbsence(sID);
     }
 
     /**

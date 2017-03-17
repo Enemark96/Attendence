@@ -1,6 +1,9 @@
 package attendence.gui.model;
 
+import attendence.be.Student;
 import attendence.be.Teacher;
+import attendence.bll.SearchManager;
+import java.util.List;
 
 /**
  *
@@ -10,6 +13,7 @@ public class TeacherModel
 {
 
     private Teacher currentUser;
+    SearchManager searchManager;
 
     private static TeacherModel instance;
 
@@ -24,6 +28,7 @@ public class TeacherModel
 
     private TeacherModel()
     {
+          searchManager = new  SearchManager();
 
     }
 
@@ -35,6 +40,12 @@ public class TeacherModel
     public void setCurrentUser(Teacher currentUser)
     {
         this.currentUser = currentUser;
+    }
+    
+ 
+    public List search(List<Student> students, String searchQuery)
+    {
+       return  searchManager.search(students, searchQuery);
     }
 
 }

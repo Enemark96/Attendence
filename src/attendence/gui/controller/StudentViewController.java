@@ -14,7 +14,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -27,8 +26,8 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -37,18 +36,17 @@ import javafx.stage.Stage;
  *
  * @author Jacob Enemark
  */
-public class StudentViewController extends Dragable implements Initializable {
+public class StudentViewController extends Dragable implements Initializable
+{
 
     private final ObservableList data;
     private final StudentModel model;
     private final DateTimeModel dateTimeModel;
     private final PersonManager manager;
-    private final List<Absence> absences;
+//    private final List<Absence> absences;
 
     @FXML
     private Label lblUser;
-    @FXML
-    private ListView<String> listMissedClasses;
     @FXML
     private Button btnCheckIn;
     @FXML
@@ -59,13 +57,15 @@ public class StudentViewController extends Dragable implements Initializable {
     private ComboBox<String> comboMonth;
     @FXML
     private Label labelProcent;
+    @FXML
+    private HBox calendarContainer;
 
     public StudentViewController() throws SQLException, IOException
     {
         this.manager = new PersonManager();
-        this.data = FXCollections.observableArrayList();
-        this.absences = manager.getAllAbsence();
         this.model = StudentModel.getInstance();
+        this.data = FXCollections.observableArrayList();
+//        this.absences = manager.getAllAbsence(model.getCurrentUser().getId());
         this.dateTimeModel = new DateTimeModel();
 
     }
@@ -76,15 +76,7 @@ public class StudentViewController extends Dragable implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        for (Absence absence : absences)
-        {
-            if (model.getCurrentUser().getId() == absence.getStudentId())
-            {
-                model.addMissedClass(absence);
-            }
-        }
         lblUser.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
-        listMissedClasses.setItems(model.getMissedClassesAsString());
 
         comboMonth.setItems(dateTimeModel.getFormattedMonths());
 
@@ -190,7 +182,8 @@ public class StudentViewController extends Dragable implements Initializable {
         for (final PieChart.Data data : absenceChart.getData())
         {
             data.getNode().addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET,
-                    new EventHandler<MouseEvent>() {
+                    new EventHandler<MouseEvent>()
+            {
                 @Override
                 public void handle(MouseEvent e)
                 {
@@ -205,4 +198,5 @@ public class StudentViewController extends Dragable implements Initializable {
         }
 
     }
+
 }
