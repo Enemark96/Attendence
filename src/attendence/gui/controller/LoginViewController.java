@@ -13,6 +13,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -38,7 +40,6 @@ import javafx.stage.StageStyle;
 public class LoginViewController extends Dragable implements Initializable
 {
 
-    private Person loadedPerson;
     private final PersonManager manager;
     private final StudentModel studentModel;
     private final TeacherModel teacherModel;
@@ -69,7 +70,6 @@ public class LoginViewController extends Dragable implements Initializable
         students = manager.getAllStudents();
         teachers = manager.getAllTeachers();
         people = manager.getAllPeople();
-        loadedPerson = loginModel.loadLoginData();
 
     }
 
@@ -79,11 +79,12 @@ public class LoginViewController extends Dragable implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-   
+
         loadUserLogin();
+
         setCheckBoxRemember();
         setLogo();
-          
+
     }
 
     @FXML
@@ -92,8 +93,7 @@ public class LoginViewController extends Dragable implements Initializable
         try
         {
             checkLoginInformation(txtUser.getText(), txtPass.getText());
-        }
-        catch (IOException ex)
+        } catch (IOException ex)
         {
             showErrorDialog("I/O Error", "", "We couldn't get access to the "
                     + "requested data!");
@@ -137,20 +137,18 @@ public class LoginViewController extends Dragable implements Initializable
                 if (person instanceof Teacher)
                 {
                     teacherModel.setCurrentUser((Teacher) person);
-                }
-                else if (person instanceof Student)
+                } else if (person instanceof Student)
                 {
                     studentModel.setCurrentUser((Student) person);
                     studentModel.setMissedClasses(manager.getAllAbsence(person.getId()));
-                }
-                else
+                } else
                 {
                     return;
                 }
 
                 if (checkBoxRemember.isSelected())
                 {
-                    loginModel.saveLoginData(person);
+                    loginModel.saveLoginData(userName, password);
                 }
 
                 // A variable to hold the name of the view.
@@ -185,7 +183,6 @@ public class LoginViewController extends Dragable implements Initializable
 //            }
 //        }
 //    }
-    
     /**
      * Shows an error dialog.
      *
@@ -210,7 +207,6 @@ public class LoginViewController extends Dragable implements Initializable
 //            loginModel.saveLoginData(person);
 //        }
 //    }
-
     private void loadStage(String viewPath) throws IOException
     {
         Stage primaryStage = (Stage) txtUser.getScene().getWindow();
@@ -230,11 +226,10 @@ public class LoginViewController extends Dragable implements Initializable
 
     private void setCheckBoxRemember()
     {
-        if (txtUser.getText().isEmpty())
+        if (txtPass.getText().isEmpty())
         {
             checkBoxRemember.setSelected(false);
-        }
-        else
+        } else
         {
             checkBoxRemember.setSelected(true);
         }
@@ -242,52 +237,46 @@ public class LoginViewController extends Dragable implements Initializable
 
     private void loadUserLogin()
     {
+        String username = "";
+        String password = "";
         try
         {
-            makeNewFileWhenNull();
-        }
-        catch (IOException ex)
+            loginModel.loadLoginData();
+            username = loginModel.loadLoginData()[0];
+            password = loginModel.loadLoginData()[1];
+        } catch (IOException ex)
         {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setAlertType(AlertType.ERROR);
+            alert.setHeaderText("Load failed");
         }
-        if (loadedPerson != null)
+        if (username != "")
         {
 
-            txtUser.setText(loadedPerson.getUserName());
-            txtPass.setText(loadedPerson.getPassword());
+            txtUser.setText(username);
+            txtPass.setText(password);
 
-            if (!checkBoxRemember.isPressed())
+            clearUserLogin();
+        }
+    }
+
+    private void clearUserLogin()
+    {
+        if (!checkBoxRemember.isPressed())
+        {
+            try
             {
-                try
-                {
-                    Teacher teacher = new Teacher(0, "", "", "", "", "", "");
-                    loginModel.saveLoginData(teacher);
-                    loadedPerson = teacher;
-
-                }
-                catch (IOException ex)
-                {
-                    Alert alert = new Alert(AlertType.ERROR);
-                    alert.setAlertType(AlertType.ERROR);
-                }
+                loginModel.saveLoginData("", "");
+                
+            } catch (IOException ex)
+            {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setAlertType(AlertType.ERROR);
+                alert.setHeaderText("Save failed");
             }
         }
     }
 
-    private void makeNewFileWhenNull() throws IOException
-    {
-        try
-        {
-            loginModel.loadLoginData();
-        }
-        catch (FileNotFoundException ex)
-        {
-            loginModel.saveLoginData(loadedPerson);
-
-        }
-    }
-    
     private void setLogo()
     {
         Image imageEasv = new Image("attendence/gui/view/images/easv.png");

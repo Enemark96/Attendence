@@ -6,15 +6,15 @@
 package attendence.dal;
 
 import attendence.be.Person;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  *
@@ -22,65 +22,43 @@ import java.util.ArrayList;
  */
 public class SaveFileDAO
 {
-      public void writeObjectData( Person person, String fileName) throws IOException
+
+
+
+    public SaveFileDAO(String fileName)
     {
-        FileOutputStream fos = new FileOutputStream(fileName);
-        BufferedOutputStream bos = new BufferedOutputStream(fos);
-        try (ObjectOutputStream oos = new ObjectOutputStream(fos))
+
+    }
+
+    public void saveLogin(String userName, String passWord) throws IOException
+    {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("LoginData.txt")))
         {
-            oos.writeObject(person);
+            
+            bw.append(userName 
+                    + ", " + passWord);
+         
         }
     }
-      
-//      public void writeObjectData(Person person, String fileName) throws IOException
-//    {        
-//        try (FileOutputStream fos = new FileOutputStream(fileName))
-//        {
-//            BufferedOutputStream bos = new BufferedOutputStream(fos);
-//            ObjectOutputStream oos = new ObjectOutputStream(bos);
-//            oos.writeObject(person);
-//        }
-//    }
 
-    /**
-     * Reads an object from a file, the object must be an arraylist of playlists.
-     * @param fileName The fileName to read the information from.
-     * @return Returns a new array containing all the stored data.
-     * @throws FileNotFoundException 
-     */
-//    public Person readObjectData(String fileName) throws FileNotFoundException
-//    {
-//        Person person = null;
-//
-//        FileInputStream fis = new FileInputStream(fileName);
-//        BufferedInputStream bis = new BufferedInputStream(fis);
-//        try (ObjectInputStream ois = new ObjectInputStream(bis))
-//        {
-//            
-//              person =  (Person) ois.readObject();
-//        }
-//        catch (IOException | ClassNotFoundException ex)
-//        {
-//            System.out.println("No file");
-//        }
-//        return person;
-//    }
-    
-    public Person readObjectData(String fileName) throws FileNotFoundException
+    public String[] loadLogin() throws FileNotFoundException, IOException
     {
-        Person person = null;
+//        ArrayList<String> userData = new ArrayList<>();
+        String[] loadedArray = new String[2];
 
-        try (FileInputStream fis = new FileInputStream(fileName))
+       try (BufferedReader br = new BufferedReader(new FileReader("LoginData.txt")))
         {
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            ObjectInputStream ois = new ObjectInputStream(bis);
-            person = (Person) ois.readObject();
+            Scanner scanner = new Scanner(br);
+            while (scanner.hasNext())
+            {
+                     String line = scanner.nextLine();
+                String[] fields = line.split(",");
+                loadedArray[0] = fields[0].trim();
+                loadedArray[1] = fields[1].trim();
+            
+        
+            }
         }
-        catch (IOException | ClassNotFoundException ex)
-        {
-            System.out.println("Ingen fil");
-        }
-
-        return person;
+        return loadedArray;
     }
 }
