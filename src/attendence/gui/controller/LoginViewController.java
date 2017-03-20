@@ -141,7 +141,7 @@ public class LoginViewController extends Dragable implements Initializable
                 else if (person instanceof Student)
                 {
                     studentModel.setCurrentUser((Student) person);
-                    studentModel.setMissedClasses(manager.getAllAbsence(person.getId()));
+                    studentModel.setMissedClasses(manager.getSingleStudentAbsence(person.getId()));
                 }
                 else
                 {

@@ -5,6 +5,7 @@
  */
 package attendence.gui.controller;
 
+import attendence.be.Absence;
 import attendence.be.Student;
 import attendence.bll.PersonManager;
 import attendence.gui.model.DateTimeModel;
@@ -12,6 +13,8 @@ import attendence.gui.model.TeacherModel;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
@@ -34,14 +37,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * The controller for the teacher view.
  *
  * @author Simon Birkedal, Stephan Fuhlendorff, Thomas Hansen & Jacob Enemark
  */
-public class TeacherViewController extends Dragable implements Initializable
-{
+public class TeacherViewController extends Dragable implements Initializable {
 
     private final TeacherModel model;
     private final PersonManager manager;
@@ -49,6 +53,7 @@ public class TeacherViewController extends Dragable implements Initializable
     private final List<Student> studentList;
     private final ObservableList<Student> allStudents;
     private ObservableList<Student> searchedStudents;
+    private final List<Absence> absence;
 
     @FXML
     private Label lblUsername;
@@ -75,11 +80,13 @@ public class TeacherViewController extends Dragable implements Initializable
     @FXML
     private DatePicker dateSecondDate;
 
+    LocalDate firstDate;
+    LocalDate secondDate;
+
     /**
      * The default constructor for the TeacherViewController.
      */
-    public TeacherViewController() throws SQLException, IOException
-    {
+    public TeacherViewController() throws SQLException, IOException {
         this.manager = new PersonManager();
         this.studentList = manager.getAllStudents();
         this.allStudents = FXCollections.observableArrayList();
@@ -87,20 +94,20 @@ public class TeacherViewController extends Dragable implements Initializable
         this.model = TeacherModel.getInstance();
         dateTimeModel = new DateTimeModel();
         allStudents.addAll(studentList);
+        absence = new ArrayList<>();
+
     }
 
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
+    public void initialize(URL url, ResourceBundle rb) {
         lblUsername.setText(model.getCurrentUser().getFirstName() + " " + model.getCurrentUser().getLastName());
         tblStudentAbs.setItems(allStudents);
         colStudent.setCellValueFactory(new PropertyValueFactory<>("fullName"));
 
         addCheckBoxes();
-
         fillComboBoxes();
         updateDateInfo();
         search();
@@ -108,52 +115,71 @@ public class TeacherViewController extends Dragable implements Initializable
 
     }
 
+    public void getAllAbsence(LocalDate startDate, LocalDate endDate) throws SQLException {
+        absence.clear();
+        absence.addAll(manager.getAllAbsence(startDate, endDate));
+        for (Absence abs : absence) {
+                System.out.println(abs.getDate().toString());
+            }
+    }
+
     @FXML
-    private void closeWindow(MouseEvent event)
-    {
+    public void handleFirstDate() throws SQLException {
+        firstDate = dateFirstDate.getValue();
+        if (dateSecondDate.getValue() != null) {
+            getAllAbsence(firstDate, secondDate);
+            
+        }
+
+    }
+
+    @FXML
+    public void handleSecondDate() throws SQLException {
+        secondDate = dateSecondDate.getValue();
+        if (dateFirstDate.getValue() != null) {
+            getAllAbsence(firstDate, secondDate);
+        }
+
+    }
+
+    @FXML
+    private void closeWindow(MouseEvent event) {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
 
     }
 
     @FXML
-    private void setOffset(MouseEvent event)
-    {
+    private void setOffset(MouseEvent event) {
         startDrag(event);
     }
 
-    private void fillComboBoxes()
-    {
+    private void fillComboBoxes() {
         comboClass.getItems().add("CS2016A");
         comboClass.getItems().add("CS2016B");
 
         getCurrentDate();
     }
 
-    private void getCurrentDate()
-    {
+    private void getCurrentDate() {
 //        dateFirstDate.setValue(LocalDate.now());
 //        dateSecondDate.setValue(LocalDate.now());
 
     }
 
-    private void updateDateInfo()
-    {
+    private void updateDateInfo() {
 
     }
 
-    private void search()
-    {
+    private void search() {
         txtSearch.textProperty().addListener((ObservableValue<? extends String> listener, String oldQuery, String newQuery)
-                -> 
-                {
-                    searchedStudents.setAll(model.search(studentList, newQuery));
-                    tblStudentAbs.setItems(searchedStudents);
+                -> {
+            searchedStudents.setAll(model.search(studentList, newQuery));
+            tblStudentAbs.setItems(searchedStudents);
         });
     }
 
-    private void setLogo()
-    {
+    private void setLogo() {
         Image imageEasv = new Image("attendence/gui/view/images/easv.png");
         imageLogo.setImage(imageEasv);
         imageLogo.setFitHeight(80);
@@ -161,24 +187,21 @@ public class TeacherViewController extends Dragable implements Initializable
     }
 
     @FXML
-    private void drag(MouseEvent event)
-    {
+    private void drag(MouseEvent event) {
         dragging(event, txtSearch);
     }
 
-    private void addCheckBoxes()
-    {
+    private void addCheckBoxes() {
         colAbsence.setCellValueFactory(
-                new Callback<CellDataFeatures<Student, Boolean>, ObservableValue<Boolean>>()
-        {
+                new Callback<CellDataFeatures<Student, Boolean>, ObservableValue<Boolean>>() {
 
             @Override
-            public ObservableValue<Boolean> call(CellDataFeatures<Student, Boolean> param)
-            {
+            public ObservableValue<Boolean> call(CellDataFeatures<Student, Boolean> param) {
                 return param.getValue().registeredProperty();
             }
         });
 
         colAbsence.setCellFactory(CheckBoxTableCell.forTableColumn(colAbsence));
     }
+
 }
