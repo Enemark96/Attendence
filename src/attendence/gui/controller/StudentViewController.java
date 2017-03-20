@@ -68,7 +68,7 @@ public class StudentViewController extends Dragable implements Initializable
         this.manager = new PersonManager();
         this.model = StudentModel.getInstance();
         this.data = FXCollections.observableArrayList();
-//        this.absences = manager.getAllAbsence(model.getCurrentUser().getId());
+//        this.absences = manager.getSingleStudentAbsence(model.getCurrentUser().getId());
         this.dateTimeModel = new DateTimeModel();
    
     }
